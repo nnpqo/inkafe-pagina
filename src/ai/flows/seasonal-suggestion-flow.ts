@@ -17,10 +17,6 @@ const SimplifiedMenuItemSchema = z.object({
   description: z.string()
 });
 
-const SeasonalSuggestionsInputSchema = z.object({
-  menuItems: z.array(SimplifiedMenuItemSchema).describe("Lista de elementos del menú con su ID, nombre y descripción."),
-  seasonalFruits: z.array(z.string()).describe("Una lista de frutas actualmente en temporada.")
-});
 export type SeasonalSuggestionsInput = z.infer<typeof SeasonalSuggestionsInputSchema>;
 
 const SeasonalSuggestionSchema = z.object({
@@ -28,10 +24,17 @@ const SeasonalSuggestionSchema = z.object({
   reason: z.string().describe("Una breve y atractiva razón por la cual este artículo es una buena elección de temporada (por ejemplo, '¡Destaca las fresas frescas de temporada!').")
 });
 
+export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
+
+const SeasonalSuggestionsInputSchema = z.object({
+  menuItems: z.array(SimplifiedMenuItemSchema).describe("Lista de elementos del menú con su ID, nombre y descripción."),
+  seasonalFruits: z.array(z.string()).describe("Una lista de frutas actualmente en temporada.")
+});
+
+
 const SeasonalSuggestionsOutputSchema = z.object({
   recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de hasta 3-4 recomendaciones de menú de temporada.")
 });
-export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
 
 
 export async function suggestSeasonalItems(input: SeasonalSuggestionsInput): Promise<SeasonalSuggestionsOutput> {
@@ -44,7 +47,7 @@ const prompt = ai.definePrompt({
   output: {schema: SeasonalSuggestionsOutputSchema},
   prompt: `Eres un asesor creativo de menús de cafetería. Dada la siguiente lista de elementos del menú y una lista de frutas de temporada, identifica hasta 3-4 elementos del menú que destaquen prominentemente estas frutas o que serían una excelente especial de temporada debido a ellas.
 
-Para cada recomendación, proporciona el 'menuItemId' y una 'reason' (razón). La razón debe ser breve, atractiva e invitar a los clientes a probar el plato. Asegúrate de que el 'menuItemId' corresponda a un ID de la lista de menú proporcionada.
+Para cada recomendación, proporciona el 'menuItemId' y una 'reason' (razón). La razón debe ser breve, atractiva e invitar a los clientes a probar el plato. Es MUY IMPORTANTE que el 'menuItemId' sea uno de los IDs exactos de la lista de 'Elementos del Menú' que se proporciona a continuación, y no inventes nuevos IDs.
 
 Elementos del Menú:
 {{#each menuItems}}

@@ -37,9 +37,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles, Info } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { getMenuSuggestions } from './actions'; // Nueva acción
-import type { SeasonalSuggestionSchema } from '@/ai/flows/seasonal-suggestion-flow';
-
-const categories = ['Todas', ...Array.from(new Set(allMenuItems.map(item => item.category)))];
+import type { SeasonalSuggestionsOutput } from '@/ai/flows/seasonal-suggestion-flow'; // Importar el tipo de output directamente
 
 interface CartItem {
   item: MenuItem;
@@ -136,7 +134,7 @@ export default function MenuPage() {
     toast({
       title: "Producto Eliminado",
       description: "El producto ha sido eliminado de tu pedido.",
-      variant: "default", 
+      variant: "default",
     });
   };
 
@@ -146,17 +144,17 @@ export default function MenuPage() {
         cartItem.item.id === itemIdToUpdate
           ? { ...cartItem, quantity: Math.max(1, cartItem.quantity + change) }
           : cartItem
-      ).filter(cartItem => cartItem.quantity > 0) 
+      ).filter(cartItem => cartItem.quantity > 0)
     );
   };
-  
+
    const handleDirectCartQuantityChange = (itemIdToUpdate: string, newQuantityStr: string) => {
     const newQuantity = parseInt(newQuantityStr, 10);
-    if (newQuantityStr === "" ) { 
+    if (newQuantityStr === "" ) {
        setCartItems(prevCartItems =>
         prevCartItems.map(cartItem =>
           cartItem.item.id === itemIdToUpdate
-            ? { ...cartItem, quantity: 0 } 
+            ? { ...cartItem, quantity: 0 }
             : cartItem
         )
       );
@@ -179,13 +177,13 @@ export default function MenuPage() {
   const handleCartQuantityInputBlur = (itemIdToUpdate: string, currentQuantity: number) => {
     if (currentQuantity === 0 || isNaN(currentQuantity)) {
       const itemInCart = cartItems.find(ci => ci.item.id === itemIdToUpdate);
-      if (itemInCart && itemInCart.quantity === 0) { 
+      if (itemInCart && itemInCart.quantity === 0) {
          handleRemoveFromCart(itemIdToUpdate);
       } else {
          setCartItems(prevCartItems =>
           prevCartItems.map(cartItem =>
             cartItem.item.id === itemIdToUpdate
-              ? { ...cartItem, quantity: 1 } 
+              ? { ...cartItem, quantity: 1 }
               : cartItem
           )
         );
@@ -211,7 +209,7 @@ export default function MenuPage() {
 
     setIsPlacingOrder(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setCartItems([]);
     setOrderConfirmed(true);
     setIsPlacingOrder(false);
@@ -267,7 +265,7 @@ export default function MenuPage() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-lg text-muted-foreground py-8">No hay sugerencias especiales por el momento. ¡Todo nuestro menú es delicioso!</p>
+            <p className="text-center text-lg text-muted-foreground py-8">Nuestro chef AI no ha encontrado sugerencias especiales de temporada en este momento, ¡pero explora nuestro delicioso menú completo abajo!</p>
           )}
         </section>
 
@@ -383,7 +381,7 @@ export default function MenuPage() {
             </CardFooter>
           </Card>
         )}
-        
+
         {cartItems.length === 0 && !orderConfirmed && (
            <div className="text-center py-8 mb-8 text-muted-foreground">
              <ShoppingCart className="mx-auto h-12 w-12 mb-4 opacity-50" />
