@@ -126,7 +126,7 @@ export default function MenuPage() {
         cartItem.item.id === itemIdToUpdate
           ? { ...cartItem, quantity: cartItem.quantity + change }
           : cartItem
-      ).filter(cartItem => cartItem.quantity > 0) // Esto eliminará el ítem si la cantidad es 0
+      ).filter(cartItem => cartItem.quantity > 0) 
     );
   };
 
@@ -228,22 +228,37 @@ export default function MenuPage() {
         )}
 
         <div className="mb-8 p-6 bg-card rounded-lg shadow-md">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-            <div className="lg:col-span-2 w-full">
-              <Label htmlFor="search-input" className="text-sm font-medium text-foreground/80 mb-1 block">Buscar Producto</Label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="search-input"
-                  type="text"
-                  placeholder="Ej: Salteña Vegana, Espresso Yungueño..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-background"
-                />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-end">
+            {/* Columna para Búsqueda y filtros relacionados */}
+            <div className="space-y-4 lg:col-span-2">
+              <div>
+                <Label htmlFor="search-input" className="text-sm font-medium text-foreground/80 mb-1 block">Buscar Producto</Label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="search-input"
+                    type="text"
+                    placeholder="Ej: Salteña Vegana, Espresso Yungueño..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 bg-background w-full" 
+                  />
+                </div>
+              </div>
+              <div className="flex items-center space-x-4 pt-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="vegan-filter" checked={isVegan} onCheckedChange={(checked) => setIsVegan(Boolean(checked))} />
+                  <Label htmlFor="vegan-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Vegano</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="gluten-free-filter" checked={isGlutenFree} onCheckedChange={(checked) => setIsGlutenFree(Boolean(checked))} />
+                  <Label htmlFor="gluten-free-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Sin Gluten</Label>
+                </div>
               </div>
             </div>
-            <div className="w-full">
+
+            {/* Columna para Categoría */}
+            <div className="w-full lg:col-span-1">
               <Label htmlFor="category-select" className="text-sm font-medium text-foreground/80 mb-1 block">Filtrar por Categoría</Label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger id="category-select" className="w-full bg-background">
@@ -255,14 +270,6 @@ export default function MenuPage() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-            <div className="flex items-center space-x-2 pt-6 sm:pt-0 self-end">
-              <Checkbox id="vegan-filter" checked={isVegan} onCheckedChange={(checked) => setIsVegan(Boolean(checked))} />
-              <Label htmlFor="vegan-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Vegano</Label>
-            </div>
-            <div className="flex items-center space-x-2 pt-6 sm:pt-0 self-end">
-              <Checkbox id="gluten-free-filter" checked={isGlutenFree} onCheckedChange={(checked) => setIsGlutenFree(Boolean(checked))} />
-              <Label htmlFor="gluten-free-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Sin Gluten</Label>
             </div>
           </div>
         </div>
@@ -347,7 +354,7 @@ export default function MenuPage() {
                                 <TableCell className="font-medium break-words">{cartItem.item.name}</TableCell>
                                 <TableCell className="text-center">
                                   <div className="flex items-center justify-center gap-1">
-                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={isPlacingOrder}>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={isPlacingOrder || cartItem.quantity <= 0}>
                                       <MinusCircle className="h-4 w-4" />
                                     </Button>
                                     <Input
