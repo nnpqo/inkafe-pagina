@@ -4,7 +4,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { SectionTitle } from '@/components/SectionTitle';
 import { MenuItemCard } from '@/components/MenuItemCard';
-import { menuItems as allMenuItems, seasonalFruits } from '@/lib/data';
+import { menuItems as allMenuItems } from '@/lib/data'; // Removed seasonalFruits as it's not directly used here anymore
 import type { MenuItem } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import {
@@ -36,18 +36,18 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { getMenuSuggestions } from './actions';
-import type { SeasonalSuggestionsOutput } from '@/ai/flows/seasonal-suggestion-flow';
-import { Badge } from '@/components/ui/badge';
+// Removed AI related imports: getMenuSuggestions, SeasonalSuggestionsOutput
 
 interface CartItem {
   item: MenuItem;
   quantity: number;
 }
 
-interface SuggestedItem extends MenuItem {
-  suggestionReason: string;
-}
+// Define a list of featured seasonal items by their IDs or any other criteria
+const featuredSeasonalItemIds = ['5', '6', '7']; // Cheesecake Maracuyá, Jugo Lúcuma, Ensalada Fresas
+const featuredSeasonalItems: MenuItem[] = allMenuItems.filter(item => 
+  featuredSeasonalItemIds.includes(item.id)
+);
 
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
@@ -60,8 +60,7 @@ export default function MenuPage() {
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const { toast } = useToast();
 
-  const [seasonalSuggestions, setSeasonalSuggestions] = useState<SuggestedItem[]>([]);
-  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(true);
+  // Removed state for AI suggestions: seasonalSuggestions, isLoadingSuggestions
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(new Set(allMenuItems.map(item => item.category)));
@@ -70,39 +69,8 @@ export default function MenuPage() {
 
   useEffect(() => {
     setIsMounted(true);
-    const fetchSuggestions = async () => {
-      setIsLoadingSuggestions(true);
-      const simplifiedMenuItems = allMenuItems.map(item => ({
-        id: item.id,
-        name: item.name,
-        description: item.description,
-      }));
-      const result = await getMenuSuggestions(simplifiedMenuItems, seasonalFruits);
-      console.log("Seasonal suggestions result from server action:", result); 
-
-      if ("error" in result) {
-        console.error(result.error);
-        toast({ title: "Error", description: "No se pudieron cargar las sugerencias de temporada.", variant: "destructive" });
-        setSeasonalSuggestions([]);
-      } else if (result && result.recommendations) {
-        const mappedSuggestions: SuggestedItem[] = result.recommendations
-          .map(rec => {
-            const menuItem = allMenuItems.find(item => item.id === rec.menuItemId);
-            if (menuItem) {
-              return { ...menuItem, suggestionReason: rec.reason };
-            }
-            return null;
-          })
-          .filter((item): item is SuggestedItem => item !== null);
-        setSeasonalSuggestions(mappedSuggestions);
-      } else {
-        console.error("Unexpected result structure for seasonal suggestions:", result);
-        setSeasonalSuggestions([]);
-      }
-      setIsLoadingSuggestions(false);
-    };
-    fetchSuggestions();
-  }, [toast]);
+    // Removed fetchSuggestions call
+  }, []);
 
   const filteredItems = useMemo(() => {
     return allMenuItems.filter(item => {
@@ -249,46 +217,25 @@ export default function MenuPage() {
         <section className="mb-12">
           <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary mb-2 flex items-center">
             <Sparkles className="mr-3 h-7 w-7 text-accent" />
-            Especiales de Temporada
+            Especiales Destacados
           </h3>
-          <p className="text-muted-foreground mb-6">¡Descubre nuestros platos destacados con los ingredientes más frescos de la estación!</p>
-          {isLoadingSuggestions ? (
+          <p className="text-muted-foreground mb-6">¡Descubre nuestras recomendaciones y los sabores más frescos!</p>
+          {featuredSeasonalItems.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {[1,2,3].map(i => (
-                <Card key={i} className="shadow-lg">
-                  <CardContent className="p-6 flex flex-col items-center justify-center h-[200px]">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary mb-2" />
-                    <p className="text-muted-foreground">Cargando sugerencias...</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : seasonalSuggestions.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {seasonalSuggestions.map((item) => (
-                <div key={item.id} className="flex flex-col">
-                  <MenuItemCard item={item} onAddToCart={handleAddToCart} />
-                  <div className="mt-2 space-y-1 p-2 bg-primary/5 border border-primary/20 rounded-md">
-                    <Badge variant="secondary" className="bg-accent/20 text-accent-foreground hover:bg-accent/30 border-accent/50">
-                      <Sparkles className="mr-1.5 h-3.5 w-3.5 text-accent" />
-                      Sugerencia de Temporada
-                    </Badge>
-                    <p className="text-xs text-muted-foreground pl-1">{item.suggestionReason}</p>
-                  </div>
-                </div>
+              {featuredSeasonalItems.map((item) => (
+                <MenuItemCard key={item.id} item={item} onAddToCart={handleAddToCart} />
               ))}
             </div>
           ) : (
              <Alert variant="default" className="bg-amber-50 border-amber-400 text-amber-700">
                 <Sparkles className="h-5 w-5 text-amber-700" />
-                <AlertTitle className="font-semibold">Explorando Sabores...</AlertTitle>
+                <AlertTitle className="font-semibold">¡Pronto Novedades!</AlertTitle>
                 <AlertDescription>
-                Nuestro chef AI está buscando las mejores combinaciones de temporada. Mientras tanto, ¡explora nuestro delicioso menú completo más abajo!
+                Estamos preparando nuestras recomendaciones especiales. Mientras tanto, ¡explora nuestro delicioso menú completo más abajo!
                 </AlertDescription>
             </Alert>
           )}
         </section>
-
 
         <div className="mb-8 p-6 bg-card rounded-lg shadow-md flex flex-col md:flex-row gap-6 items-center justify-between">
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
