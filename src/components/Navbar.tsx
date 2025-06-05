@@ -36,7 +36,7 @@ export function Navbar() {
       <div className="container flex h-20 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <Coffee className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold font-headline text-primary">Inkafe Hub</span>
+          <span className="text-2xl font-bold font-headline text-primary">Inkafe</span>
         </Link>
 
         <nav className="hidden md:flex gap-6 items-center">
@@ -66,7 +66,7 @@ export function Navbar() {
               <div className="flex flex-col gap-6">
                 <Link href="/" className="flex items-center gap-2 mb-4" onClick={() => setIsMobileMenuOpen(false)}>
                   <Coffee className="h-8 w-8 text-primary" />
-                  <span className="text-2xl font-bold font-headline text-primary">Inkafe Hub</span>
+                  <span className="text-2xl font-bold font-headline text-primary">Inkafe</span>
                 </Link>
                 {navLinks.map((link) => (
                   <SheetClose key={link.href} asChild>

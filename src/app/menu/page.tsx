@@ -47,7 +47,6 @@ export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
   const [isVegan, setIsVegan] = useState<boolean>(false);
   const [isGlutenFree, setIsGlutenFree] = useState<boolean>(false);
-  const [showPopularOnly, setShowPopularOnly] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
 
@@ -69,21 +68,20 @@ export default function MenuPage() {
     const categoryMatch = selectedCategory === 'Todas' || item.category === selectedCategory;
     const veganMatch = !isVegan || item.tags.includes('vegano');
     const glutenFreeMatch = !isGlutenFree || item.tags.includes('sin gluten');
-    const popularMatch = !showPopularOnly || item.tags.includes('popular');
     const searchMatch = !searchTerm ||
                         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return categoryMatch && veganMatch && glutenFreeMatch && popularMatch && searchMatch;
+    return categoryMatch && veganMatch && glutenFreeMatch && searchMatch;
   };
 
   const filteredItems = useMemo(() => {
     return allMenuItems.filter(baseFilterLogic);
-  }, [selectedCategory, isVegan, isGlutenFree, showPopularOnly, searchTerm]);
+  }, [selectedCategory, isVegan, isGlutenFree, searchTerm]);
 
   const featuredItemsToDisplay = useMemo(() => {
     const potentialFeatured = allMenuItems.filter(item => candidateFeaturedItemIds.includes(item.id));
     return potentialFeatured.filter(baseFilterLogic);
-  }, [selectedCategory, isVegan, isGlutenFree, showPopularOnly, searchTerm]);
+  }, [selectedCategory, isVegan, isGlutenFree, searchTerm]);
 
 
   const parsePrice = (priceString: string): number => {
@@ -126,9 +124,9 @@ export default function MenuPage() {
     setCartItems(prevCartItems =>
       prevCartItems.map(cartItem =>
         cartItem.item.id === itemIdToUpdate
-          ? { ...cartItem, quantity: Math.max(1, cartItem.quantity + change) }
+          ? { ...cartItem, quantity: cartItem.quantity + change }
           : cartItem
-      ).filter(cartItem => cartItem.quantity > 0)
+      ).filter(cartItem => cartItem.quantity > 0) // Esto eliminará el ítem si la cantidad es 0
     );
   };
 
@@ -199,7 +197,7 @@ export default function MenuPage() {
     setIsPlacingOrder(false);
     toast({
       title: "¡Pedido Completado con Sabor Boliviano!",
-      description: "Tu pedido ha sido realizado con éxito. Gracias por elegir Inkafe Cochabamba.",
+      description: "Tu pedido ha sido realizado con éxito. Gracias por elegir Inkafe.",
     });
 
     setTimeout(() => setOrderConfirmed(false), 7000);
@@ -230,7 +228,7 @@ export default function MenuPage() {
         )}
 
         <div className="mb-8 p-6 bg-card rounded-lg shadow-md">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
             <div className="lg:col-span-2 w-full">
               <Label htmlFor="search-input" className="text-sm font-medium text-foreground/80 mb-1 block">Buscar Producto</Label>
               <div className="relative">
@@ -265,10 +263,6 @@ export default function MenuPage() {
             <div className="flex items-center space-x-2 pt-6 sm:pt-0 self-end">
               <Checkbox id="gluten-free-filter" checked={isGlutenFree} onCheckedChange={(checked) => setIsGlutenFree(Boolean(checked))} />
               <Label htmlFor="gluten-free-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Sin Gluten</Label>
-            </div>
-            <div className="flex items-center space-x-2 pt-6 sm:pt-0 self-end">
-              <Checkbox id="popular-filter" checked={showPopularOnly} onCheckedChange={(checked) => setShowPopularOnly(Boolean(checked))} />
-              <Label htmlFor="popular-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Populares</Label>
             </div>
           </div>
         </div>
@@ -353,7 +347,7 @@ export default function MenuPage() {
                                 <TableCell className="font-medium break-words">{cartItem.item.name}</TableCell>
                                 <TableCell className="text-center">
                                   <div className="flex items-center justify-center gap-1">
-                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={(cartItem.quantity <= 1 && !isPlacingOrder) || isPlacingOrder}>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={isPlacingOrder}>
                                       <MinusCircle className="h-4 w-4" />
                                     </Button>
                                     <Input
