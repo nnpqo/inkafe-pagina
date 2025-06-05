@@ -36,8 +36,8 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles, Info } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { getMenuSuggestions } from './actions'; // Nueva acción
-import type { SeasonalSuggestionsOutput } from '@/ai/flows/seasonal-suggestion-flow'; // Importar el tipo de output directamente
+import { getMenuSuggestions } from './actions';
+import type { SeasonalSuggestionsOutput } from '@/ai/flows/seasonal-suggestion-flow';
 
 interface CartItem {
   item: MenuItem;
@@ -61,6 +61,11 @@ export default function MenuPage() {
 
   const [seasonalSuggestions, setSeasonalSuggestions] = useState<SuggestedItem[]>([]);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(true);
+
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(new Set(allMenuItems.map(item => item.category)));
+    return ['Todas', ...uniqueCategories];
+  }, []);
 
   useEffect(() => {
     setIsMounted(true);
@@ -408,3 +413,4 @@ export default function MenuPage() {
     </div>
   );
 }
+
