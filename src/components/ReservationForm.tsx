@@ -22,7 +22,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { CafeTable } from "@/lib/data";
 import { availableTimes } from "@/lib/data";
 
@@ -58,7 +58,7 @@ export function ReservationForm({ selectedTable, onSubmitReservation }: Reservat
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedTable) {
       form.setValue("tableId", selectedTable.id);
       form.setValue("guests", Math.min(form.getValues("guests") || 1, selectedTable.capacity));
