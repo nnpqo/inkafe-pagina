@@ -34,10 +34,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles, Info } from 'lucide-react';
+import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { getMenuSuggestions } from './actions';
 import type { SeasonalSuggestionsOutput } from '@/ai/flows/seasonal-suggestion-flow';
+import { Badge } from '@/components/ui/badge';
 
 interface CartItem {
   item: MenuItem;
@@ -77,7 +78,7 @@ export default function MenuPage() {
         description: item.description,
       }));
       const result = await getMenuSuggestions(simplifiedMenuItems, seasonalFruits);
-      console.log("Seasonal suggestions result from server action:", result); // Log para diagnóstico
+      console.log("Seasonal suggestions result from server action:", result); 
 
       if ("error" in result) {
         console.error(result.error);
@@ -245,7 +246,6 @@ export default function MenuPage() {
       <div className="container">
         <SectionTitle title="Nuestro Menú Digital" subtitle="Explora nuestra variedad de cafés, postres, desayunos y más. Filtra según tus preferencias y arma tu pedido." centered />
 
-        {/* Seasonal Suggestions Section */}
         <section className="mb-12">
           <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary mb-2 flex items-center">
             <Sparkles className="mr-3 h-7 w-7 text-accent" />
@@ -268,14 +268,24 @@ export default function MenuPage() {
               {seasonalSuggestions.map((item) => (
                 <div key={item.id} className="flex flex-col">
                   <MenuItemCard item={item} onAddToCart={handleAddToCart} />
-                  <p className="mt-2 text-sm text-accent font-medium bg-accent/10 p-2 rounded-md border border-accent/30">
-                    <Info size={14} className="inline mr-1" /> {item.suggestionReason}
-                  </p>
+                  <div className="mt-2 space-y-1 p-2 bg-primary/5 border border-primary/20 rounded-md">
+                    <Badge variant="secondary" className="bg-accent/20 text-accent-foreground hover:bg-accent/30 border-accent/50">
+                      <Sparkles className="mr-1.5 h-3.5 w-3.5 text-accent" />
+                      Sugerencia de Temporada
+                    </Badge>
+                    <p className="text-xs text-muted-foreground pl-1">{item.suggestionReason}</p>
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-center text-lg text-muted-foreground py-8">Nuestro chef AI no ha encontrado sugerencias especiales de temporada en este momento, ¡pero explora nuestro delicioso menú completo abajo!</p>
+             <Alert variant="default" className="bg-amber-50 border-amber-400 text-amber-700">
+                <Sparkles className="h-5 w-5 text-amber-700" />
+                <AlertTitle className="font-semibold">Explorando Sabores...</AlertTitle>
+                <AlertDescription>
+                Nuestro chef AI está buscando las mejores combinaciones de temporada. Mientras tanto, ¡explora nuestro delicioso menú completo más abajo!
+                </AlertDescription>
+            </Alert>
           )}
         </section>
 
@@ -400,7 +410,6 @@ export default function MenuPage() {
            </div>
         )}
 
-        {/* Title for the rest of the menu */}
         <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary my-8 pt-8 border-t border-border">
           Todo Nuestro Menú
         </h3>
