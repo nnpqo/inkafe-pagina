@@ -151,9 +151,9 @@ export default function MenuPage() {
   const handleCartQuantityInputBlur = (itemIdToUpdate: string, currentQuantity: number) => {
     if (currentQuantity === 0 || isNaN(currentQuantity)) {
       const itemInCart = cartItems.find(ci => ci.item.id === itemIdToUpdate);
-      if (itemInCart && itemInCart.quantity === 0) { // If user set to 0 and blurs
+      if (itemInCart && itemInCart.quantity === 0) { 
          handleRemoveFromCart(itemIdToUpdate);
-      } else { // If invalid (e.g. NaN from empty string then blur), default to 1
+      } else { 
          setCartItems(prevCartItems =>
           prevCartItems.map(cartItem =>
             cartItem.item.id === itemIdToUpdate
@@ -182,7 +182,7 @@ export default function MenuPage() {
     }
 
     setIsPlacingOrder(true);
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500)); 
 
     setCartItems([]);
     setOrderConfirmed(true);
@@ -256,7 +256,7 @@ export default function MenuPage() {
                 <Sparkles className="mr-3 h-7 w-7 text-accent" />
                 Especiales Destacados
               </h3>
-              <p className="text-muted-foreground mb-6">¡Descubre nuestras recomendaciones y los sabores más frescos!</p>
+              <p className="text-muted-foreground mb-6">¡Nuestras recomendaciones seleccionadas para ti!</p>
               {featuredSeasonalItems.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                   {featuredSeasonalItems.map((item) => (
@@ -268,7 +268,7 @@ export default function MenuPage() {
                     <Sparkles className="h-5 w-5 text-amber-700" />
                     <AlertTitle className="font-semibold">¡Pronto Novedades!</AlertTitle>
                     <AlertDescription>
-                    Estamos preparando nuestras recomendaciones especiales. Mientras tanto, ¡explora nuestro delicioso menú completo más abajo!
+                    Estamos preparando nuestras recomendaciones especiales. ¡Vuelve pronto!
                     </AlertDescription>
                 </Alert>
               )}
@@ -292,99 +292,98 @@ export default function MenuPage() {
           </div>
 
           {/* Columna Derecha: Carrito de Compras */}
-          <div className="lg:sticky lg:top-28 mt-12 lg:mt-0"> {/* Ajusta top-X según altura del navbar + espacio */}
-            {cartItems.length > 0 && !orderConfirmed && (
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-primary flex items-center">
-                    <ShoppingCart className="mr-3 h-7 w-7" /> Tu Pedido
-                  </CardTitle>
+          <div className="lg:sticky lg:top-28 mt-12 lg:mt-0">
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl text-primary flex items-center">
+                  <ShoppingCart className="mr-3 h-7 w-7" /> Tu Pedido
+                </CardTitle>
+                {cartItems.length > 0 && !orderConfirmed && (
                   <CardDescription>Revisa los productos en tu carrito y procede a realizar el pedido.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[40%]">Producto</TableHead>
-                        <TableHead className="text-center w-[25%]">Cantidad</TableHead>
-                        <TableHead className="text-right w-[15%]">Precio Unit.</TableHead>
-                        <TableHead className="text-right w-[15%]">Subtotal</TableHead>
-                        <TableHead className="w-[5%]"></TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {cartItems.map((cartItem) => (
-                        <TableRow key={cartItem.item.id}>
-                          <TableCell className="font-medium">{cartItem.item.name}</TableCell>
-                          <TableCell className="text-center">
-                            <div className="flex items-center justify-center gap-1">
-                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={cartItem.quantity <= 1 && !isPlacingOrder}>
-                                <MinusCircle className="h-4 w-4" />
-                              </Button>
-                              <Input
-                                type="text"
-                                inputMode="numeric"
-                                value={cartItem.quantity === 0 ? '' : cartItem.quantity.toString()}
-                                onChange={(e) => handleDirectCartQuantityChange(cartItem.item.id, e.target.value)}
-                                onBlur={() => handleCartQuantityInputBlur(cartItem.item.id, cartItem.quantity)}
-                                className="w-10 h-7 text-center px-1"
-                                disabled={isPlacingOrder}
-                              />
-                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, 1)} disabled={isPlacingOrder}>
-                                <PlusCircle className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price))}</TableCell>
-                          <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price) * cartItem.quantity)}</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="icon" onClick={() => handleRemoveFromCart(cartItem.item.id)} className="text-destructive hover:text-destructive" disabled={isPlacingOrder}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-                <CardFooter className="flex flex-col items-end space-y-2 pt-6">
-                  <div className="text-xl font-semibold">
-                    Total: {formatCurrency(cartTotal)}
-                  </div>
-                  <Button onClick={handlePlaceOrder} size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isPlacingOrder || cartItems.length === 0}>
-                    {isPlacingOrder ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Procesando Pedido...
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag className="mr-2 h-5 w-5" /> Realizar Pedido
-                      </>
-                    )}
-                  </Button>
-                </CardFooter>
-              </Card>
-            )}
+                )}
+              </CardHeader>
 
-            {cartItems.length === 0 && !orderConfirmed && (
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-primary flex items-center">
-                    <ShoppingCart className="mr-3 h-7 w-7 opacity-50" /> Tu Pedido
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center py-8 text-muted-foreground">
-                  <ShoppingCart className="mx-auto h-10 w-10 mb-3 opacity-30" />
-                  <p className="text-md">Tu carrito está vacío.</p>
-                  <p className="text-sm">Agrega productos del menú para comenzar tu pedido.</p>
-                </CardContent>
-              </Card>
-            )}
+              {!orderConfirmed && (
+                <>
+                  {cartItems.length > 0 ? (
+                    <>
+                      <CardContent>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead className="w-[40%]">Producto</TableHead>
+                              <TableHead className="text-center w-[25%]">Cantidad</TableHead>
+                              <TableHead className="text-right w-[15%]">Precio Unit.</TableHead>
+                              <TableHead className="text-right w-[15%]">Subtotal</TableHead>
+                              <TableHead className="w-[5%]"></TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {cartItems.map((cartItem) => (
+                              <TableRow key={cartItem.item.id}>
+                                <TableCell className="font-medium">{cartItem.item.name}</TableCell>
+                                <TableCell className="text-center">
+                                  <div className="flex items-center justify-center gap-1">
+                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={cartItem.quantity <= 1 && !isPlacingOrder}>
+                                      <MinusCircle className="h-4 w-4" />
+                                    </Button>
+                                    <Input
+                                      type="text"
+                                      inputMode="numeric"
+                                      value={cartItem.quantity === 0 ? '' : cartItem.quantity.toString()}
+                                      onChange={(e) => handleDirectCartQuantityChange(cartItem.item.id, e.target.value)}
+                                      onBlur={() => handleCartQuantityInputBlur(cartItem.item.id, cartItem.quantity)}
+                                      className="w-10 h-7 text-center px-1"
+                                      disabled={isPlacingOrder}
+                                    />
+                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, 1)} disabled={isPlacingOrder}>
+                                      <PlusCircle className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price))}</TableCell>
+                                <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price) * cartItem.quantity)}</TableCell>
+                                <TableCell className="text-right">
+                                  <Button variant="ghost" size="icon" onClick={() => handleRemoveFromCart(cartItem.item.id)} className="text-destructive hover:text-destructive" disabled={isPlacingOrder}>
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </CardContent>
+                      <CardFooter className="flex flex-col items-end space-y-2 pt-6">
+                        <div className="text-xl font-semibold">
+                          Total: {formatCurrency(cartTotal)}
+                        </div>
+                        <Button onClick={handlePlaceOrder} size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isPlacingOrder || cartItems.length === 0}>
+                          {isPlacingOrder ? (
+                            <>
+                              <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Procesando Pedido...
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingBag className="mr-2 h-5 w-5" /> Realizar Pedido
+                            </>
+                          )}
+                        </Button>
+                      </CardFooter>
+                    </>
+                  ) : (
+                    <CardContent className="text-center py-12 text-muted-foreground">
+                      <ShoppingCart className="mx-auto h-12 w-12 mb-4 opacity-40" />
+                      <p className="text-lg font-medium">Tu carrito está vacío</p>
+                      <p className="text-sm">Agrega productos del menú para comenzar tu pedido.</p>
+                    </CardContent>
+                  )}
+                </>
+              )}
+              {/* Si orderConfirmed es true, el Alert global maneja el mensaje, y el carrito aquí no muestra contenido viejo o vacío. */}
+            </Card>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-    
