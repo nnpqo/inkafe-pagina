@@ -61,8 +61,11 @@ Lista de Frutas de Temporada Actuales:
 - {{{this}}}
 {{/each}}
 
-Proporciona tus recomendaciones en el formato JSON especificado por el esquema de salida.
-Si después de un análisis exhaustivo no encuentras ningún elemento del menú que encaje claramente con las frutas de temporada, devuelve una lista de 'recommendations' vacía.`,
+INSTRUCCIONES DE FORMATO DE SALIDA MUY IMPORTANTES:
+Tu respuesta DEBE ser un objeto JSON. Este objeto JSON DEBE tener una única clave de nivel superior llamada "recommendations".
+El valor de la clave "recommendations" DEBE ser un array de objetos de sugerencia. Cada objeto de sugerencia debe contener "menuItemId" y "reason".
+Si después de un análisis exhaustivo no encuentras ningún elemento del menú que encaje claramente con las frutas de temporada, DEBES devolver un objeto JSON con la clave "recommendations" y un array vacío como su valor. Ejemplo: \`{"recommendations": []}\`.
+NO devuelvas un array vacío \`[]\` o \`null\` como respuesta de nivel superior. La respuesta siempre debe ser un objeto JSON con la clave "recommendations".`,
   config: {
     safetySettings: [
       {
@@ -98,3 +101,4 @@ const seasonalSuggestionFlow = ai.defineFlow(
     return output || { recommendations: [] };
   }
 );
+
