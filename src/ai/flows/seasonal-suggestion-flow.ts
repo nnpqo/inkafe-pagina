@@ -3,7 +3,7 @@
 /**
  * @fileOverview Un agente de IA para sugerir elementos del menú basados en frutas de temporada.
  *
- * - getSeasonalSuggestions - Una función que devuelve recomendaciones de menú estacionales.
+ * - suggestSeasonalItems - Una función que devuelve recomendaciones de menú estacionales.
  * - SeasonalSuggestionsInput - El tipo de entrada para la función.
  * - SeasonalSuggestionsOutput - El tipo de retorno para la función.
  */
@@ -17,6 +17,10 @@ const SimplifiedMenuItemSchema = z.object({
   description: z.string()
 });
 
+const SeasonalSuggestionsInputSchema = z.object({
+  menuItems: z.array(SimplifiedMenuItemSchema).describe("Lista de elementos del menú con su ID, nombre y descripción."),
+  seasonalFruits: z.array(z.string()).describe("Una lista de frutas actualmente en temporada.")
+});
 export type SeasonalSuggestionsInput = z.infer<typeof SeasonalSuggestionsInputSchema>;
 
 const SeasonalSuggestionSchema = z.object({
@@ -24,17 +28,10 @@ const SeasonalSuggestionSchema = z.object({
   reason: z.string().describe("Una breve y atractiva razón por la cual este artículo es una buena elección de temporada (por ejemplo, '¡Destaca las fresas frescas de temporada!').")
 });
 
-export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
-
-const SeasonalSuggestionsInputSchema = z.object({
-  menuItems: z.array(SimplifiedMenuItemSchema).describe("Lista de elementos del menú con su ID, nombre y descripción."),
-  seasonalFruits: z.array(z.string()).describe("Una lista de frutas actualmente en temporada.")
-});
-
-
 const SeasonalSuggestionsOutputSchema = z.object({
   recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de hasta 3-4 recomendaciones de menú de temporada.")
 });
+export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
 
 
 export async function suggestSeasonalItems(input: SeasonalSuggestionsInput): Promise<SeasonalSuggestionsOutput> {
@@ -60,6 +57,26 @@ Frutas de Temporada Actuales:
 {{/each}}
 
 Genera tus recomendaciones:`,
+  config: {
+    safetySettings: [
+      {
+        category: 'HARM_CATEGORY_HATE_SPEECH',
+        threshold: 'BLOCK_ONLY_HIGH',
+      },
+      {
+        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+        threshold: 'BLOCK_NONE',
+      },
+      {
+        category: 'HARM_CATEGORY_HARASSMENT',
+        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+      },
+      {
+        category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+        threshold: 'BLOCK_MEDIUM_AND_ABOVE', // Adjusted from LOW_AND_ABOVE to be less strict
+      },
+    ],
+  },
 });
 
 const seasonalSuggestionFlow = ai.defineFlow(
