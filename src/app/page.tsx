@@ -7,10 +7,9 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { ArrowRight, Coffee, CalendarDays, Users, BookmarkPlus } from 'lucide-react';
 import { menuItems, eventItems } from '@/lib/data';
 import type { MenuItem, EventItem } from '@/lib/data';
-// Eliminamos la importación de ContactForm ya que la sección de reserva de mesas ahora tiene su propia página.
 
 export default function Home() {
-  const featuredMenuItems = menuItems.slice(0, 3);
+  const featuredMenuItems = menuItems.filter(item => item.tags.includes('popular')).slice(0, 3);
   const upcomingEvents = eventItems.slice(0, 2);
 
   return (
@@ -19,23 +18,23 @@ export default function Home() {
       <section className="relative h-[calc(100vh-5rem)] min-h-[500px] flex items-center justify-center text-center text-white">
         <Image
           src="https://placehold.co/1920x1080.png"
-          alt="Interior acogedor de Inkafe"
+          alt="Interior acogedor de Inkafe en Cochabamba con detalles andinos"
           fill
           style={{ objectFit: 'cover' }}
           className="absolute z-0 filter brightness-75"
-          data-ai-hint="cafe interior"
+          data-ai-hint="interior acogedor cafeteria Cochabamba detalles andinos luz calida"
           priority
         />
         <div className="relative z-10 p-6 bg-black/30 rounded-lg backdrop-blur-sm">
           <h1 className="text-5xl md:text-7xl font-bold font-headline mb-4">
-            Inkafe Hub
+            Inkafe
           </h1>
           <p className="text-xl md:text-2xl mb-8">
-            Un café, una conversación, un momento.
+            Sabor boliviano, corazón cochabambino. Un café, una conversación, un momento único.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105">
-              <Link href="/menu">Ver Menú <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              <Link href="/menu">Ver Nuestro Menú <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
             <Button asChild variant="secondary" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105">
               <Link href="/reservations">Reservar Mesa <BookmarkPlus className="ml-2 h-5 w-5" /></Link>
@@ -47,13 +46,13 @@ export default function Home() {
       {/* About Us Snippet */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container">
-          <SectionTitle title="Bienvenido a Inkafe" subtitle="Donde cada taza cuenta una historia y cada rincón invita a la calma." centered />
+          <SectionTitle title="Bienvenido a Inkafe Cochabamba" subtitle="Donde cada taza cuenta una historia de nuestra tierra y cada rincón invita a la calma y la tradición." centered />
           <div className="max-w-3xl mx-auto text-center text-lg text-foreground/80 mb-8">
             <p className="mb-4">
-              En Inkafe, creemos en la magia de los pequeños momentos: una conversación amena, el aroma del café recién hecho, la calidez de un espacio acogedor. Somos más que una cafetería, somos un punto de encuentro para estudiantes, trabajadores remotos y todos aquellos que buscan una pausa reconfortante en su día.
+              En Inkafe, celebramos la magia de los pequeños momentos: una conversación amena al calor de un api, el aroma embriagador de nuestro café de los Yungas recién tostado, la calidez de un espacio que se siente como casa. Somos más que una cafetería en Cochabamba; somos un punto de encuentro, un refugio para el alma, donde estudiantes, teletrabajadores y todos quienes buscan una pausa reconfortante pueden disfrutar de lo mejor de Bolivia.
             </p>
             <Button asChild variant="link" className="text-primary text-lg">
-              <Link href="/about">Conoce Nuestra Historia <Users className="ml-2 h-5 w-5" /></Link>
+              <Link href="/about">Conoce Nuestra Historia y Pasión <Users className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
         </div>
@@ -62,7 +61,7 @@ export default function Home() {
       {/* Featured Menu Section */}
       <section className="py-16 md:py-24 bg-card">
         <div className="container">
-          <SectionTitle title="Nuestros Favoritos" subtitle="Delicias seleccionadas por nuestros baristas y amadas por nuestros clientes." centered />
+          <SectionTitle title="Nuestros Favoritos de la Llajta" subtitle="Delicias seleccionadas con cariño, amadas por nuestros clientes y con el auténtico sabor boliviano." centered />
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredMenuItems.map((item: MenuItem) => (
               <Card key={item.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -74,21 +73,26 @@ export default function Home() {
                   <CardDescription className="text-muted-foreground">{item.price}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-foreground/80 mb-4">{item.description}</p>
+                  <p className="text-foreground/80 mb-4 text-sm">{item.description}</p>
                   <Button asChild variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                    <Link href="/menu">Ver en Menú <Coffee className="ml-2 h-5 w-5" /></Link>
+                    <Link href={`/menu?search=${encodeURIComponent(item.name)}`}>Ver en Menú <Coffee className="ml-2 h-5 w-5" /></Link>
                   </Button>
                 </CardContent>
               </Card>
             ))}
           </div>
+           {featuredMenuItems.length === 0 && (
+             <p className="text-center text-lg text-muted-foreground py-12">
+                Pronto destacaremos nuestras delicias más populares. ¡Visita nuestro menú completo!
+             </p>
+           )}
         </div>
       </section>
 
       {/* Upcoming Events Section */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container">
-          <SectionTitle title="Próximos Eventos" subtitle="No te pierdas nuestras actividades especiales, promociones y momentos únicos." centered />
+          <SectionTitle title="Próximos Eventos en Inkafe" subtitle="No te pierdas nuestras actividades culturales, promociones especiales y momentos únicos para compartir en Cochabamba." centered />
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {upcomingEvents.map((event: EventItem) => (
               <Card key={event.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -100,16 +104,16 @@ export default function Home() {
                   <CardDescription className="text-muted-foreground">{event.date} - {event.time}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-foreground/80 mb-4">{event.description}</p>
+                  <p className="text-foreground/80 mb-4 text-sm">{event.description}</p>
                   <Button asChild variant="default" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                    <Link href="/events">Más Detalles <CalendarDays className="ml-2 h-5 w-5" /></Link>
+                    <Link href="/events">Más Detalles del Evento <CalendarDays className="ml-2 h-5 w-5" /></Link>
                   </Button>
                 </CardContent>
               </Card>
             ))}
              {upcomingEvents.length === 0 && (
                 <p className="text-center text-lg text-muted-foreground md:col-span-2 py-12">
-                    No hay eventos programados en este momento. ¡Vuelve pronto!
+                    Actualmente estamos cocinando nuevas sorpresas. ¡Vuelve pronto para no perderte nada!
                 </p>
             )}
           </div>
@@ -127,8 +131,8 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-card">
         <div className="container max-w-3xl text-center">
           <SectionTitle 
-            title="¿Listo para Visitarnos?" 
-            subtitle="Asegura tu mesa y disfruta de la experiencia Inkafe. Es rápido y fácil." 
+            title="¿Listo para Vivir la Experiencia Inkafe?" 
+            subtitle="Asegura tu mesa en nuestro rincón cochabambino. Es rápido, fácil y te espera un momento inolvidable." 
             centered 
           />
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 mt-4">

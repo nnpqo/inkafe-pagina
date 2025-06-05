@@ -5,9 +5,11 @@ import type { EventItem } from '@/lib/data';
 
 export default function EventsPage() {
   const musicEvents = eventItems.filter(event => event.type === 'Música en vivo');
-  const readingEvents = eventItems.filter(event => event.type === 'Lecturas');
+  const readingEvents = eventItems.filter(event => event.type === 'Lecturas y Tertulias');
   const gameEvents = eventItems.filter(event => event.type === 'Juegos de mesa');
   const promotionEvents = eventItems.filter(event => event.type === 'Promoción');
+  const workshopEvents = eventItems.filter(event => event.type === 'Taller');
+
 
   const renderEventSection = (title: string, events: EventItem[]) => {
     if (events.length === 0) return null;
@@ -21,7 +23,7 @@ export default function EventsPage() {
             ))}
           </div>
         ) : (
-           <p className="text-muted-foreground">Próximamente más eventos de este tipo.</p>
+           <p className="text-muted-foreground">Próximamente más eventos de este tipo. ¡Mantente atento a nuestras sorpresas bolivianas!</p>
         )}
       </section>
     );
@@ -30,16 +32,18 @@ export default function EventsPage() {
   return (
     <div className="py-16 md:py-24 bg-background">
       <div className="container">
-        <SectionTitle title="Eventos y Promociones" subtitle="Descubre lo que está sucediendo en Inkafe. ¡Siempre hay algo nuevo!" centered />
+        <SectionTitle title="Eventos y Promociones en Inkafe" subtitle="Descubre la movida cultural y las delicias que te esperan en tu café cochabambino. ¡Siempre hay algo nuevo para compartir!" centered />
 
-        {renderEventSection('Promociones Especiales', promotionEvents)}
-        {renderEventSection('Música en Vivo', musicEvents)}
-        {renderEventSection('Clubes de Lectura y Talleres', readingEvents)}
-        {renderEventSection('Noches de Juegos de Mesa', gameEvents)}
+        {renderEventSection('Promociones Especiales de la Llajta', promotionEvents)}
+        {renderEventSection('Música en Vivo con Sabor Boliviano', musicEvents)}
+        {renderEventSection('Clubes de Lectura y Tertulias Culturales', readingEvents)}
+        {renderEventSection('Noches de Juegos de Mesa y Tradición', gameEvents)}
+        {renderEventSection('Talleres Creativos y de Café', workshopEvents)}
+
 
         {eventItems.length === 0 && (
           <p className="text-center text-lg text-muted-foreground py-12">
-            Actualmente no hay eventos programados. ¡Vuelve pronto!
+            De momento, estamos preparando nuevas sorpresas. ¡Vuelve pronto para descubrir los próximos eventos en Inkafe Cochabamba!
           </p>
         )}
       </div>
