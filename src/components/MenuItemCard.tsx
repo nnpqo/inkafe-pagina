@@ -62,7 +62,7 @@ export function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
       <div className="relative h-52 w-full">
-        <Image src={item.imageUrl} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.imageHint}/>
+        <Image src={item.imageUrl} alt={item.name} fill style={{ objectFit: 'cover' }} data-ai-hint={item.imageHint}/>
       </div>
       <CardHeader>
         <CardTitle className="text-xl text-primary">{item.name}</CardTitle>

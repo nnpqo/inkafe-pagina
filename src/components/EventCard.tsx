@@ -12,7 +12,7 @@ export function EventCard({ event }: EventCardProps) {
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
       <div className="relative h-52 w-full">
-        <Image src={event.imageUrl} alt={event.name} layout="fill" objectFit="cover" data-ai-hint={event.imageHint}/>
+        <Image src={event.imageUrl} alt={event.name} fill style={{ objectFit: 'cover' }} data-ai-hint={event.imageHint}/>
       </div>
       <CardHeader>
         <CardTitle className="text-xl text-primary">{event.name}</CardTitle>

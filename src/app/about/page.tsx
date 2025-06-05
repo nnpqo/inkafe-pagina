@@ -27,7 +27,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
-              <Image src="https://placehold.co/800x600.png" alt="Equipo de Inkafe trabajando" layout="fill" objectFit="cover" data-ai-hint="coffee shop team" />
+              <Image src="https://placehold.co/800x600.png" alt="Equipo de Inkafe trabajando" fill style={{ objectFit: 'cover' }} data-ai-hint="coffee shop team" />
             </div>
           </div>
         </section>
@@ -83,7 +83,7 @@ export default function AboutPage() {
             {teamMembers.map((member) => (
               <Card key={member.name} className="text-center shadow-lg overflow-hidden">
                 <div className="relative h-64 w-full">
-                 <Image src={member.imageUrl} alt={member.name} layout="fill" objectFit="cover" data-ai-hint={member.imageHint} />
+                 <Image src={member.imageUrl} alt={member.name} fill style={{ objectFit: 'cover' }} data-ai-hint={member.imageHint} />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl text-primary">{member.name}</CardTitle>

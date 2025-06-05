@@ -20,8 +20,8 @@ export default function Home() {
         <Image
           src="https://placehold.co/1920x1080.png"
           alt="Interior acogedor de Inkafe"
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: 'cover' }}
           className="absolute z-0 filter brightness-75"
           data-ai-hint="cafe interior"
           priority
@@ -67,7 +67,7 @@ export default function Home() {
             {featuredMenuItems.map((item: MenuItem) => (
               <Card key={item.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-60 w-full">
-                  <Image src={item.imageUrl} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.imageHint} />
+                  <Image src={item.imageUrl} alt={item.name} fill style={{ objectFit: 'cover' }} data-ai-hint={item.imageHint} />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-2xl text-primary">{item.name}</CardTitle>
@@ -93,7 +93,7 @@ export default function Home() {
             {upcomingEvents.map((event: EventItem) => (
               <Card key={event.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                  <div className="relative h-60 w-full">
-                  <Image src={event.imageUrl} alt={event.name} layout="fill" objectFit="cover" data-ai-hint={event.imageHint} />
+                  <Image src={event.imageUrl} alt={event.name} fill style={{ objectFit: 'cover' }} data-ai-hint={event.imageHint} />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-2xl text-primary">{event.name}</CardTitle>
