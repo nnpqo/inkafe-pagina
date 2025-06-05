@@ -42,9 +42,15 @@ const prompt = ai.definePrompt({
   name: 'seasonalMenuSuggestionPrompt',
   input: {schema: SeasonalSuggestionsInputSchema},
   output: {schema: SeasonalSuggestionsOutputSchema},
-  prompt: `Eres un asesor creativo de menús de cafetería. Dada la siguiente lista de elementos del menú y una lista de frutas de temporada, identifica hasta 3-4 elementos del menú que destaquen prominentemente estas frutas o que serían una excelente especial de temporada debido a ellas.
+  prompt: `Eres un asesor creativo de menús de cafetería experto en destacar ingredientes de temporada.
+Analiza la siguiente lista de nuestros 'Elementos del Menú' y compárala con la lista de 'Frutas de Temporada Actuales'.
+Tu objetivo es identificar entre 1 y 4 elementos del menú que sean especialmente relevantes debido a estas frutas de temporada.
 
-Para cada recomendación, proporciona el 'menuItemId' y una 'reason' (razón). La razón debe ser breve, atractiva e invitar a los clientes a probar el plato. Es MUY IMPORTANTE que el 'menuItemId' sea uno de los IDs exactos de la lista de 'Elementos del Menú' que se proporciona a continuación, y no inventes nuevos IDs.
+Para cada elemento que selecciones:
+1.  Asegúrate de que el 'menuItemId' sea el ID EXACTO de uno de los 'Elementos del Menú' proporcionados. NO inventes IDs.
+2.  Crea una 'reason' (razón) breve y atractiva. Esta razón debe explicar por qué el plato es una buena elección de temporada, idealmente mencionando la fruta de temporada que contiene o con la que se relaciona. Por ejemplo: "¡Perfecto para la temporada, con el toque dulce de nuestras fresas frescas!" o "Elaborado con jugosos mangos de estación."
+
+Si encuentras elementos que claramente utilizan una o más de las frutas de temporada, priorízalos.
 
 Elementos del Menú:
 {{#each menuItems}}
@@ -56,7 +62,7 @@ Frutas de Temporada Actuales:
 - {{{this}}}
 {{/each}}
 
-Genera tus recomendaciones:`,
+Proporciona tus recomendaciones en el formato especificado. Si no encuentras ninguna sugerencia clara, devuelve una lista de recomendaciones vacía.`,
   config: {
     safetySettings: [
       {
@@ -73,7 +79,7 @@ Genera tus recomendaciones:`,
       },
       {
         category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE', // Adjusted from LOW_AND_ABOVE to be less strict
+        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
       },
     ],
   },
