@@ -292,7 +292,7 @@ export default function MenuPage() {
           </div>
 
           {/* Columna Derecha: Carrito de Compras */}
-          <div className="lg:sticky lg:top-28 mt-12 lg:mt-0">
+          <div className="lg:sticky lg:top-28 mt-12 lg:mt-0 lg:w-96">
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl text-primary flex items-center">
@@ -321,7 +321,7 @@ export default function MenuPage() {
                           <TableBody>
                             {cartItems.map((cartItem) => (
                               <TableRow key={cartItem.item.id}>
-                                <TableCell className="font-medium">{cartItem.item.name}</TableCell>
+                                <TableCell className="font-medium break-words">{cartItem.item.name}</TableCell>
                                 <TableCell className="text-center">
                                   <div className="flex items-center justify-center gap-1">
                                     <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={cartItem.quantity <= 1 && !isPlacingOrder}>

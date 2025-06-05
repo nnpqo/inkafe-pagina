@@ -1,13 +1,7 @@
 import Image from 'next/image';
 import { SectionTitle } from '@/components/SectionTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Target, Eye, Heart } from 'lucide-react';
-
-const teamMembers = [
-  { name: 'Ana García', role: 'Fundadora y Barista Jefe', imageUrl: 'https://placehold.co/400x400.png', imageHint: 'woman portrait' },
-  { name: 'Carlos Vera', role: 'Gerente de Operaciones', imageUrl: 'https://placehold.co/400x400.png', imageHint: 'man portrait' },
-  { name: 'Lucía Paz', role: 'Chef Pastelera', imageUrl: 'https://placehold.co/400x400.png', imageHint: 'woman chef' },
-];
+import { Target, Eye, Heart } from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -74,25 +68,6 @@ export default function AboutPage() {
                 </ul>
               </CardContent>
             </Card>
-          </div>
-        </section>
-
-        <section>
-          <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary mb-8 text-center">Nuestro Equipo</h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member) => (
-              <Card key={member.name} className="text-center shadow-lg overflow-hidden">
-                <div className="relative h-64 w-full">
-                 <Image src={member.imageUrl} alt={member.name} fill style={{ objectFit: 'cover' }} data-ai-hint={member.imageHint} />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">{member.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-accent font-semibold">{member.role}</p>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </section>
       </div>
