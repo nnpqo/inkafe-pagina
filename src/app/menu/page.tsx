@@ -4,7 +4,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { SectionTitle } from '@/components/SectionTitle';
 import { MenuItemCard } from '@/components/MenuItemCard';
-import { menuItems as allMenuItems } from '@/lib/data'; // Removed seasonalFruits as it's not directly used here anymore
+import { menuItems as allMenuItems } from '@/lib/data';
 import type { MenuItem } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import {
@@ -36,14 +36,12 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-// Removed AI related imports: getMenuSuggestions, SeasonalSuggestionsOutput
 
 interface CartItem {
   item: MenuItem;
   quantity: number;
 }
 
-// Define a list of featured seasonal items by their IDs or any other criteria
 const featuredSeasonalItemIds = ['5', '6', '7']; // Cheesecake Maracuyá, Jugo Lúcuma, Ensalada Fresas
 const featuredSeasonalItems: MenuItem[] = allMenuItems.filter(item => 
   featuredSeasonalItemIds.includes(item.id)
@@ -60,8 +58,6 @@ export default function MenuPage() {
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const { toast } = useToast();
 
-  // Removed state for AI suggestions: seasonalSuggestions, isLoadingSuggestions
-
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(new Set(allMenuItems.map(item => item.category)));
     return ['Todas', ...uniqueCategories];
@@ -69,7 +65,6 @@ export default function MenuPage() {
 
   useEffect(() => {
     setIsMounted(true);
-    // Removed fetchSuggestions call
   }, []);
 
   const filteredItems = useMemo(() => {
@@ -133,7 +128,7 @@ export default function MenuPage() {
        setCartItems(prevCartItems =>
         prevCartItems.map(cartItem =>
           cartItem.item.id === itemIdToUpdate
-            ? { ...cartItem, quantity: 0 }
+            ? { ...cartItem, quantity: 0 } // Temporarily allow 0 for onBlur check
             : cartItem
         )
       );
@@ -156,9 +151,9 @@ export default function MenuPage() {
   const handleCartQuantityInputBlur = (itemIdToUpdate: string, currentQuantity: number) => {
     if (currentQuantity === 0 || isNaN(currentQuantity)) {
       const itemInCart = cartItems.find(ci => ci.item.id === itemIdToUpdate);
-      if (itemInCart && itemInCart.quantity === 0) {
+      if (itemInCart && itemInCart.quantity === 0) { // If user set to 0 and blurs
          handleRemoveFromCart(itemIdToUpdate);
-      } else {
+      } else { // If invalid (e.g. NaN from empty string then blur), default to 1
          setCartItems(prevCartItems =>
           prevCartItems.map(cartItem =>
             cartItem.item.id === itemIdToUpdate
@@ -187,7 +182,7 @@ export default function MenuPage() {
     }
 
     setIsPlacingOrder(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
 
     setCartItems([]);
     setOrderConfirmed(true);
@@ -214,28 +209,15 @@ export default function MenuPage() {
       <div className="container">
         <SectionTitle title="Nuestro Menú Digital" subtitle="Explora nuestra variedad de cafés, postres, desayunos y más. Filtra según tus preferencias y arma tu pedido." centered />
 
-        <section className="mb-12">
-          <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary mb-2 flex items-center">
-            <Sparkles className="mr-3 h-7 w-7 text-accent" />
-            Especiales Destacados
-          </h3>
-          <p className="text-muted-foreground mb-6">¡Descubre nuestras recomendaciones y los sabores más frescos!</p>
-          {featuredSeasonalItems.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {featuredSeasonalItems.map((item) => (
-                <MenuItemCard key={item.id} item={item} onAddToCart={handleAddToCart} />
-              ))}
-            </div>
-          ) : (
-             <Alert variant="default" className="bg-amber-50 border-amber-400 text-amber-700">
-                <Sparkles className="h-5 w-5 text-amber-700" />
-                <AlertTitle className="font-semibold">¡Pronto Novedades!</AlertTitle>
-                <AlertDescription>
-                Estamos preparando nuestras recomendaciones especiales. Mientras tanto, ¡explora nuestro delicioso menú completo más abajo!
-                </AlertDescription>
-            </Alert>
-          )}
-        </section>
+        {orderConfirmed && (
+          <Alert variant="default" className="mb-8 bg-green-50 border-green-500 text-green-700">
+            <ShoppingBag className="h-5 w-5 text-green-700" />
+            <AlertTitle className="font-semibold">¡Pedido Realizado con Éxito!</AlertTitle>
+            <AlertDescription>
+              Gracias por tu compra en Inkafe Hub. Puedes seguir explorando o realizar un nuevo pedido.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="mb-8 p-6 bg-card rounded-lg shadow-md flex flex-col md:flex-row gap-6 items-center justify-between">
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
@@ -266,112 +248,143 @@ export default function MenuPage() {
           </Button>
         </div>
 
-        {orderConfirmed && (
-          <Alert variant="default" className="mb-8 bg-green-50 border-green-500 text-green-700">
-            <ShoppingBag className="h-5 w-5 text-green-700" />
-            <AlertTitle className="font-semibold">¡Pedido Realizado con Éxito!</AlertTitle>
-            <AlertDescription>
-              Gracias por tu compra en Inkafe Hub. Puedes seguir explorando o realizar un nuevo pedido.
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {cartItems.length > 0 && !orderConfirmed && (
-          <Card className="mb-12 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-2xl text-primary flex items-center">
-                <ShoppingCart className="mr-3 h-7 w-7" /> Tu Pedido
-              </CardTitle>
-              <CardDescription>Revisa los productos en tu carrito y procede a realizar el pedido.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[40%]">Producto</TableHead>
-                    <TableHead className="text-center w-[25%]">Cantidad</TableHead>
-                    <TableHead className="text-right w-[15%]">Precio Unit.</TableHead>
-                    <TableHead className="text-right w-[15%]">Subtotal</TableHead>
-                    <TableHead className="w-[5%]"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {cartItems.map((cartItem) => (
-                    <TableRow key={cartItem.item.id}>
-                      <TableCell className="font-medium">{cartItem.item.name}</TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={cartItem.quantity <= 1 && !isPlacingOrder}>
-                            <MinusCircle className="h-4 w-4" />
-                          </Button>
-                          <Input
-                            type="text"
-                            inputMode="numeric"
-                            value={cartItem.quantity === 0 ? '' : cartItem.quantity.toString()}
-                            onChange={(e) => handleDirectCartQuantityChange(cartItem.item.id, e.target.value)}
-                            onBlur={() => handleCartQuantityInputBlur(cartItem.item.id, cartItem.quantity)}
-                            className="w-10 h-7 text-center px-1"
-                            disabled={isPlacingOrder}
-                          />
-                          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, 1)} disabled={isPlacingOrder}>
-                            <PlusCircle className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price))}</TableCell>
-                      <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price) * cartItem.quantity)}</TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" onClick={() => handleRemoveFromCart(cartItem.item.id)} className="text-destructive hover:text-destructive" disabled={isPlacingOrder}>
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+        <div className="lg:grid lg:grid-cols-[2fr,1fr] lg:gap-x-12 items-start">
+          {/* Columna Izquierda: Contenido del Menú */}
+          <div className="space-y-12">
+            <section>
+              <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary mb-2 flex items-center">
+                <Sparkles className="mr-3 h-7 w-7 text-accent" />
+                Especiales Destacados
+              </h3>
+              <p className="text-muted-foreground mb-6">¡Descubre nuestras recomendaciones y los sabores más frescos!</p>
+              {featuredSeasonalItems.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {featuredSeasonalItems.map((item) => (
+                    <MenuItemCard key={item.id} item={item} onAddToCart={handleAddToCart} />
                   ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-            <CardFooter className="flex flex-col items-end space-y-2 pt-6">
-              <div className="text-xl font-semibold">
-                Total: {formatCurrency(cartTotal)}
-              </div>
-              <Button onClick={handlePlaceOrder} size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isPlacingOrder}>
-                {isPlacingOrder ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Procesando Pedido...
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="mr-2 h-5 w-5" /> Realizar Pedido
-                  </>
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-        )}
+                </div>
+              ) : (
+                <Alert variant="default" className="bg-amber-50 border-amber-400 text-amber-700">
+                    <Sparkles className="h-5 w-5 text-amber-700" />
+                    <AlertTitle className="font-semibold">¡Pronto Novedades!</AlertTitle>
+                    <AlertDescription>
+                    Estamos preparando nuestras recomendaciones especiales. Mientras tanto, ¡explora nuestro delicioso menú completo más abajo!
+                    </AlertDescription>
+                </Alert>
+              )}
+            </section>
 
-        {cartItems.length === 0 && !orderConfirmed && (
-           <div className="text-center py-8 mb-8 text-muted-foreground">
-             <ShoppingCart className="mx-auto h-12 w-12 mb-4 opacity-50" />
-             <p className="text-lg">Tu carrito está vacío.</p>
-             <p>Agrega productos del menú para comenzar tu pedido.</p>
-           </div>
-        )}
-
-        <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary my-8 pt-8 border-t border-border">
-          Todo Nuestro Menú
-        </h3>
-
-        {filteredItems.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredItems.map((item: MenuItem) => (
-              <MenuItemCard key={item.id} item={item} onAddToCart={handleAddToCart} />
-            ))}
+            <section>
+              <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary pt-8 border-t border-border">
+                Todo Nuestro Menú
+              </h3>
+              <p className="text-muted-foreground mb-6">Explora todos nuestros productos disponibles.</p>
+              {filteredItems.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredItems.map((item: MenuItem) => (
+                    <MenuItemCard key={item.id} item={item} onAddToCart={handleAddToCart} />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-lg text-muted-foreground py-12">No se encontraron productos que coincidan con tus filtros.</p>
+              )}
+            </section>
           </div>
-        ) : (
-          <p className="text-center text-lg text-muted-foreground py-12">No se encontraron productos que coincidan con tus filtros.</p>
-        )}
+
+          {/* Columna Derecha: Carrito de Compras */}
+          <div className="lg:sticky lg:top-28 mt-12 lg:mt-0"> {/* Ajusta top-X según altura del navbar + espacio */}
+            {cartItems.length > 0 && !orderConfirmed && (
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-2xl text-primary flex items-center">
+                    <ShoppingCart className="mr-3 h-7 w-7" /> Tu Pedido
+                  </CardTitle>
+                  <CardDescription>Revisa los productos en tu carrito y procede a realizar el pedido.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[40%]">Producto</TableHead>
+                        <TableHead className="text-center w-[25%]">Cantidad</TableHead>
+                        <TableHead className="text-right w-[15%]">Precio Unit.</TableHead>
+                        <TableHead className="text-right w-[15%]">Subtotal</TableHead>
+                        <TableHead className="w-[5%]"></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {cartItems.map((cartItem) => (
+                        <TableRow key={cartItem.item.id}>
+                          <TableCell className="font-medium">{cartItem.item.name}</TableCell>
+                          <TableCell className="text-center">
+                            <div className="flex items-center justify-center gap-1">
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={cartItem.quantity <= 1 && !isPlacingOrder}>
+                                <MinusCircle className="h-4 w-4" />
+                              </Button>
+                              <Input
+                                type="text"
+                                inputMode="numeric"
+                                value={cartItem.quantity === 0 ? '' : cartItem.quantity.toString()}
+                                onChange={(e) => handleDirectCartQuantityChange(cartItem.item.id, e.target.value)}
+                                onBlur={() => handleCartQuantityInputBlur(cartItem.item.id, cartItem.quantity)}
+                                className="w-10 h-7 text-center px-1"
+                                disabled={isPlacingOrder}
+                              />
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, 1)} disabled={isPlacingOrder}>
+                                <PlusCircle className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price))}</TableCell>
+                          <TableCell className="text-right">{formatCurrency(parsePrice(cartItem.item.price) * cartItem.quantity)}</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="ghost" size="icon" onClick={() => handleRemoveFromCart(cartItem.item.id)} className="text-destructive hover:text-destructive" disabled={isPlacingOrder}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+                <CardFooter className="flex flex-col items-end space-y-2 pt-6">
+                  <div className="text-xl font-semibold">
+                    Total: {formatCurrency(cartTotal)}
+                  </div>
+                  <Button onClick={handlePlaceOrder} size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isPlacingOrder || cartItems.length === 0}>
+                    {isPlacingOrder ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Procesando Pedido...
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="mr-2 h-5 w-5" /> Realizar Pedido
+                      </>
+                    )}
+                  </Button>
+                </CardFooter>
+              </Card>
+            )}
+
+            {cartItems.length === 0 && !orderConfirmed && (
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-2xl text-primary flex items-center">
+                    <ShoppingCart className="mr-3 h-7 w-7 opacity-50" /> Tu Pedido
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center py-8 text-muted-foreground">
+                  <ShoppingCart className="mx-auto h-10 w-10 mb-3 opacity-30" />
+                  <p className="text-md">Tu carrito está vacío.</p>
+                  <p className="text-sm">Agrega productos del menú para comenzar tu pedido.</p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
+    
