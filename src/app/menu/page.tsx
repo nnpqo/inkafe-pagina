@@ -36,6 +36,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles, Search } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { cn } from '@/lib/utils';
 
 interface CartItem {
   item: MenuItem;
@@ -226,7 +227,7 @@ export default function MenuPage() {
           </Alert>
         )}
 
-        <div className="mb-8 p-6 bg-card rounded-lg shadow-md flex flex-col gap-6">
+        <div className="mb-8 p-6 bg-card rounded-lg shadow-md">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
             <div className="w-full">
               <Label htmlFor="search-input" className="text-sm font-medium text-foreground/80 mb-1 block">Buscar Producto</Label>
@@ -235,7 +236,7 @@ export default function MenuPage() {
                 <Input 
                   id="search-input"
                   type="text"
-                  placeholder="Ej: Salteña, Espresso..."
+                  placeholder="Ej: Salteña Vegana, Espresso..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 bg-background"
@@ -243,7 +244,7 @@ export default function MenuPage() {
               </div>
             </div>
             <div className="w-full">
-              <Label htmlFor="category-select" className="text-sm font-medium text-foreground/80 mb-1 block">Categoría</Label>
+              <Label htmlFor="category-select" className="text-sm font-medium text-foreground/80 mb-1 block">Filtrar por Categoría</Label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger id="category-select" className="w-full bg-background">
                   <SelectValue placeholder="Selecciona categoría" />
@@ -303,7 +304,13 @@ export default function MenuPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-lg text-muted-foreground py-12">No se encontraron productos que coincidan con tus filtros.</p>
+                <Alert variant="default" className="bg-blue-50 border-blue-400 text-blue-700 mt-8">
+                  <Search className="h-5 w-5 text-blue-700" />
+                  <AlertTitle className="font-semibold">¡Sin Resultados!</AlertTitle>
+                  <AlertDescription>
+                    No se encontraron productos que coincidan con tus filtros o término de búsqueda. Prueba con otros criterios.
+                  </AlertDescription>
+                </Alert>
               )}
             </section>
           </div>
@@ -340,7 +347,7 @@ export default function MenuPage() {
                                 <TableCell className="font-medium break-words">{cartItem.item.name}</TableCell>
                                 <TableCell className="text-center">
                                   <div className="flex items-center justify-center gap-1">
-                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={cartItem.quantity <= 1 && !isPlacingOrder}>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateCartQuantity(cartItem.item.id, -1)} disabled={(cartItem.quantity <= 1 && !isPlacingOrder) || isPlacingOrder}>
                                       <MinusCircle className="h-4 w-4" />
                                     </Button>
                                     <Input
