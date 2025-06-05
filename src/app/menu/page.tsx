@@ -4,7 +4,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { SectionTitle } from '@/components/SectionTitle';
 import { MenuItemCard } from '@/components/MenuItemCard';
-import { menuItems as allMenuItems } from '@/lib/data';
+import { menuItems as allMenuItems, candidateFeaturedItemIds } from '@/lib/data';
 import type { MenuItem } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,7 +34,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles } from 'lucide-react';
+import { ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles, Search } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 interface CartItem {
@@ -42,15 +42,11 @@ interface CartItem {
   quantity: number;
 }
 
-const featuredSeasonalItemIds = ['5', '6', '7']; // Cheesecake Maracuyá, Jugo Lúcuma, Ensalada Fresas
-const featuredSeasonalItems: MenuItem[] = allMenuItems.filter(item => 
-  featuredSeasonalItemIds.includes(item.id)
-);
-
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
   const [isVegan, setIsVegan] = useState<boolean>(false);
   const [isGlutenFree, setIsGlutenFree] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -60,28 +56,39 @@ export default function MenuPage() {
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(new Set(allMenuItems.map(item => item.category)));
-    return ['Todas', ...uniqueCategories];
+    return ['Todas', ...uniqueCategories.sort()];
   }, []);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  const baseFilterLogic = (item: MenuItem): boolean => {
+    const categoryMatch = selectedCategory === 'Todas' || item.category === selectedCategory;
+    const veganMatch = !isVegan || item.tags.includes('vegano');
+    const glutenFreeMatch = !isGlutenFree || item.tags.includes('sin gluten');
+    const searchMatch = !searchTerm ||
+                        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        item.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return categoryMatch && veganMatch && glutenFreeMatch && searchMatch;
+  };
+
   const filteredItems = useMemo(() => {
-    return allMenuItems.filter(item => {
-      const categoryMatch = selectedCategory === 'Todas' || item.category === selectedCategory;
-      const veganMatch = !isVegan || item.tags.includes('vegano');
-      const glutenFreeMatch = !isGlutenFree || item.tags.includes('sin gluten');
-      return categoryMatch && veganMatch && glutenFreeMatch;
-    });
-  }, [selectedCategory, isVegan, isGlutenFree]);
+    return allMenuItems.filter(baseFilterLogic);
+  }, [selectedCategory, isVegan, isGlutenFree, searchTerm]);
+
+  const featuredItemsToDisplay = useMemo(() => {
+    const potentialFeatured = allMenuItems.filter(item => candidateFeaturedItemIds.includes(item.id));
+    return potentialFeatured.filter(baseFilterLogic);
+  }, [selectedCategory, isVegan, isGlutenFree, searchTerm]);
+
 
   const parsePrice = (priceString: string): number => {
-    return parseFloat(priceString.replace('S/ ', '').replace(',', '.'));
+    return parseFloat(priceString.replace('Bs. ', '').replace(',', '.'));
   };
 
   const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(amount);
+    return new Intl.NumberFormat('es-BO', { style: 'currency', currency: 'BOB' }).format(amount);
   };
 
   const handleAddToCart = (itemToAdd: MenuItem, quantityToAdd: number) => {
@@ -128,7 +135,7 @@ export default function MenuPage() {
        setCartItems(prevCartItems =>
         prevCartItems.map(cartItem =>
           cartItem.item.id === itemIdToUpdate
-            ? { ...cartItem, quantity: 0 } // Temporarily allow 0 for onBlur check
+            ? { ...cartItem, quantity: 0 } 
             : cartItem
         )
       );
@@ -189,7 +196,7 @@ export default function MenuPage() {
     setIsPlacingOrder(false);
     toast({
       title: "¡Pedido Completado!",
-      description: "Tu pedido ha sido realizado con éxito. Gracias por tu compra.",
+      description: "Tu pedido ha sido realizado con éxito. Gracias por tu compra en Inkafe.",
     });
 
     setTimeout(() => setOrderConfirmed(false), 7000);
@@ -214,17 +221,31 @@ export default function MenuPage() {
             <ShoppingBag className="h-5 w-5 text-green-700" />
             <AlertTitle className="font-semibold">¡Pedido Realizado con Éxito!</AlertTitle>
             <AlertDescription>
-              Gracias por tu compra en Inkafe Hub. Puedes seguir explorando o realizar un nuevo pedido.
+              Gracias por tu compra en Inkafe. Puedes seguir explorando o realizar un nuevo pedido.
             </AlertDescription>
           </Alert>
         )}
 
-        <div className="mb-8 p-6 bg-card rounded-lg shadow-md flex flex-col md:flex-row gap-6 items-center justify-between">
-          <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-            <div className="w-full sm:w-auto">
+        <div className="mb-8 p-6 bg-card rounded-lg shadow-md flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+            <div className="w-full">
+              <Label htmlFor="search-input" className="text-sm font-medium text-foreground/80 mb-1 block">Buscar Producto</Label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  id="search-input"
+                  type="text"
+                  placeholder="Ej: Salteña, Espresso..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 bg-background"
+                />
+              </div>
+            </div>
+            <div className="w-full">
               <Label htmlFor="category-select" className="text-sm font-medium text-foreground/80 mb-1 block">Categoría</Label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger id="category-select" className="w-full sm:w-[200px] bg-background">
+                <SelectTrigger id="category-select" className="w-full bg-background">
                   <SelectValue placeholder="Selecciona categoría" />
                 </SelectTrigger>
                 <SelectContent>
@@ -234,41 +255,37 @@ export default function MenuPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center space-x-2 pt-6 sm:pt-7">
+            <div className="flex items-center space-x-2 pt-6 sm:pt-0 self-end">
               <Checkbox id="vegan-filter" checked={isVegan} onCheckedChange={(checked) => setIsVegan(Boolean(checked))} />
-              <Label htmlFor="vegan-filter" className="text-sm font-medium text-foreground/80">Vegano</Label>
+              <Label htmlFor="vegan-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Vegano</Label>
             </div>
-            <div className="flex items-center space-x-2 pt-6 sm:pt-7">
+            <div className="flex items-center space-x-2 pt-6 sm:pt-0 self-end">
               <Checkbox id="gluten-free-filter" checked={isGlutenFree} onCheckedChange={(checked) => setIsGlutenFree(Boolean(checked))} />
-              <Label htmlFor="gluten-free-filter" className="text-sm font-medium text-foreground/80">Sin Gluten</Label>
+              <Label htmlFor="gluten-free-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Sin Gluten</Label>
             </div>
           </div>
-          <Button variant="outline" className="w-full md:w-auto mt-4 md:mt-0 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-            <Download className="mr-2 h-4 w-4" /> Descargar Menú (PDF)
-          </Button>
         </div>
 
         <div className="lg:grid lg:grid-cols-[2fr,1fr] lg:gap-x-12 items-start">
-          {/* Columna Izquierda: Contenido del Menú */}
           <div className="space-y-12">
             <section>
               <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary mb-2 flex items-center">
                 <Sparkles className="mr-3 h-7 w-7 text-accent" />
                 Especiales Destacados
               </h3>
-              <p className="text-muted-foreground mb-6">¡Nuestras recomendaciones seleccionadas para ti!</p>
-              {featuredSeasonalItems.length > 0 ? (
+              <p className="text-muted-foreground mb-6">¡Nuestras recomendaciones seleccionadas para ti, filtradas según tus preferencias!</p>
+              {featuredItemsToDisplay.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {featuredSeasonalItems.map((item) => (
+                  {featuredItemsToDisplay.map((item) => (
                     <MenuItemCard key={item.id} item={item} onAddToCart={handleAddToCart} />
                   ))}
                 </div>
               ) : (
                 <Alert variant="default" className="bg-amber-50 border-amber-400 text-amber-700">
                     <Sparkles className="h-5 w-5 text-amber-700" />
-                    <AlertTitle className="font-semibold">¡Pronto Novedades!</AlertTitle>
+                    <AlertTitle className="font-semibold">¡Sin Coincidencias!</AlertTitle>
                     <AlertDescription>
-                    Estamos preparando nuestras recomendaciones especiales. ¡Vuelve pronto!
+                    No hay especiales destacados que coincidan con tus filtros actuales. Prueba ajustar tu búsqueda o selección.
                     </AlertDescription>
                 </Alert>
               )}
@@ -291,7 +308,6 @@ export default function MenuPage() {
             </section>
           </div>
 
-          {/* Columna Derecha: Carrito de Compras */}
           <div className="lg:sticky lg:top-28 mt-12 lg:mt-0 lg:w-96">
             <Card className="shadow-lg">
               <CardHeader>
@@ -379,7 +395,6 @@ export default function MenuPage() {
                   )}
                 </>
               )}
-              {/* Si orderConfirmed es true, el Alert global maneja el mensaje, y el carrito aquí no muestra contenido viejo o vacío. */}
             </Card>
           </div>
         </div>
