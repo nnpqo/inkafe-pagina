@@ -6,6 +6,7 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { ArrowRight, Coffee, CalendarDays, Users } from 'lucide-react';
 import { menuItems, eventItems } from '@/lib/data';
 import type { MenuItem, EventItem } from '@/lib/data';
+import { ContactForm } from '@/components/ContactForm';
 
 export default function Home() {
   const featuredMenuItems = menuItems.slice(0, 3);
@@ -37,9 +38,6 @@ export default function Home() {
             </Button>
             <Button asChild variant="secondary" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105">
               <Link href="/contact#reservar">Reservar</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/20 shadow-lg transition-transform hover:scale-105">
-              <Link href="/contact#mapa">Cómo Llegar</Link>
             </Button>
           </div>
         </div>
@@ -108,6 +106,16 @@ export default function Home() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Table Reservation Section */}
+      <section className="py-16 md:py-24 bg-card">
+        <div className="container max-w-3xl">
+          <SectionTitle title="Reserva tu Mesa" subtitle="Asegura tu lugar en Inkafe y disfruta de una experiencia inolvidable. Completa el formulario y nos pondremos en contacto." centered />
+          <div className="mt-8">
+            <ContactForm />
           </div>
         </div>
       </section>
