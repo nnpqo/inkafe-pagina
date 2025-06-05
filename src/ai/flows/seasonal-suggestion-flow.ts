@@ -75,11 +75,11 @@ Proporciona tus recomendaciones en el formato especificado. Si no encuentras nin
       },
       {
         category: 'HARM_CATEGORY_HARASSMENT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        threshold: 'BLOCK_ONLY_HIGH', // Changed from BLOCK_MEDIUM_AND_ABOVE
       },
       {
         category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        threshold: 'BLOCK_ONLY_HIGH', // Changed from BLOCK_MEDIUM_AND_ABOVE
       },
     ],
   },
