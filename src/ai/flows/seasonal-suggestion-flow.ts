@@ -24,12 +24,12 @@ const SeasonalSuggestionsInputSchema = z.object({
 export type SeasonalSuggestionsInput = z.infer<typeof SeasonalSuggestionsInputSchema>;
 
 const SeasonalSuggestionSchema = z.object({
-  menuItemId: z.string().describe("El ID del elemento del menú recomendado."),
-  reason: z.string().describe("Una breve y atractiva razón por la cual este artículo es una buena elección de temporada (por ejemplo, '¡Destaca las fresas frescas de temporada!').")
+  menuItemId: z.string().describe("El ID EXACTO de un elemento del menú proporcionado."),
+  reason: z.string().describe("Breve explicación de por qué es relevante para la temporada (ej: 'Con fresas de temporada').")
 });
 
 const SeasonalSuggestionsOutputSchema = z.object({
-  recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de hasta 3-4 recomendaciones de menú de temporada.")
+  recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de 1 a 4 recomendaciones de menú de temporada. Si no hay ninguna, la lista estará vacía.")
 });
 export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
 
@@ -42,27 +42,27 @@ const prompt = ai.definePrompt({
   name: 'seasonalMenuSuggestionPrompt',
   input: {schema: SeasonalSuggestionsInputSchema},
   output: {schema: SeasonalSuggestionsOutputSchema},
-  prompt: `Eres un asesor creativo de menús de cafetería experto en destacar ingredientes de temporada.
-Analiza la siguiente lista de nuestros 'Elementos del Menú' y compárala con la lista de 'Frutas de Temporada Actuales'.
-Tu objetivo es identificar entre 1 y 4 elementos del menú que sean especialmente relevantes debido a estas frutas de temporada.
+  prompt: `Eres un asesor creativo de menús de cafetería. Tu tarea es analizar nuestra 'Lista de Elementos del Menú' y la 'Lista de Frutas de Temporada Actuales'.
+Debes identificar entre 1 y 4 elementos de NUESTRA lista de menú que sean especialmente adecuados para la temporada actual debido a estas frutas.
 
-Para cada elemento que selecciones:
-1.  Asegúrate de que el 'menuItemId' sea el ID EXACTO de uno de los 'Elementos del Menú' proporcionados. NO inventes IDs.
-2.  Crea una 'reason' (razón) breve y atractiva. Esta razón debe explicar por qué el plato es una buena elección de temporada, idealmente mencionando la fruta de temporada que contiene o con la que se relaciona. Por ejemplo: "¡Perfecto para la temporada, con el toque dulce de nuestras fresas frescas!" o "Elaborado con jugosos mangos de estación."
+IMPORTANTE:
+1.  Para cada recomendación, el 'menuItemId' DEBE SER el ID exacto de un artículo de la 'Lista de Elementos del Menú' que te proporciono. No inventes IDs ni sugieras artículos que no estén en la lista.
+2.  Para cada recomendación, proporciona una 'reason' (razón) muy breve y directa que explique por qué el artículo es una buena elección de temporada, mencionando la fruta de temporada si es posible. Ejemplo de razón: "Destaca las fresas frescas de temporada." o "Elaborado con mangos de estación."
 
-Si encuentras elementos que claramente utilizan una o más de las frutas de temporada, priorízalos.
+Analiza cuidadosamente la descripción de cada elemento del menú para encontrar coincidencias con las frutas de temporada.
 
-Elementos del Menú:
+Lista de Elementos del Menú:
 {{#each menuItems}}
 - ID: {{{id}}}, Nombre: {{{name}}}, Descripción: {{{description}}}
 {{/each}}
 
-Frutas de Temporada Actuales:
+Lista de Frutas de Temporada Actuales:
 {{#each seasonalFruits}}
 - {{{this}}}
 {{/each}}
 
-Proporciona tus recomendaciones en el formato especificado. Si no encuentras ninguna sugerencia clara, devuelve una lista de recomendaciones vacía.`,
+Proporciona tus recomendaciones en el formato JSON especificado por el esquema de salida.
+Si después de un análisis exhaustivo no encuentras ningún elemento del menú que encaje claramente con las frutas de temporada, devuelve una lista de 'recommendations' vacía.`,
   config: {
     safetySettings: [
       {
@@ -75,11 +75,11 @@ Proporciona tus recomendaciones en el formato especificado. Si no encuentras nin
       },
       {
         category: 'HARM_CATEGORY_HARASSMENT',
-        threshold: 'BLOCK_ONLY_HIGH', // Changed from BLOCK_MEDIUM_AND_ABOVE
+        threshold: 'BLOCK_ONLY_HIGH',
       },
       {
         category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        threshold: 'BLOCK_ONLY_HIGH', // Changed from BLOCK_MEDIUM_AND_ABOVE
+        threshold: 'BLOCK_ONLY_HIGH',
       },
     ],
   },
@@ -98,4 +98,3 @@ const seasonalSuggestionFlow = ai.defineFlow(
     return output || { recommendations: [] };
   }
 );
-
