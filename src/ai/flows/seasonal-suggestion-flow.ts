@@ -24,12 +24,12 @@ const SeasonalSuggestionsInputSchema = z.object({
 export type SeasonalSuggestionsInput = z.infer<typeof SeasonalSuggestionsInputSchema>;
 
 const SeasonalSuggestionSchema = z.object({
-  menuItemId: z.string().describe("El ID EXACTO de un elemento del menú proporcionado en la entrada."),
-  reason: z.string().describe("Breve explicación de por qué es relevante para la temporada, mencionando la fruta o el tema estacional. (ej: 'Contiene fresas de temporada', 'Perfecto para el verano con mango fresco').")
+  menuItemId: z.string().describe("ID del elemento del menú."), // Simplified
+  reason: z.string().describe("Razón de la sugerencia.") // Simplified
 });
 
 const SeasonalSuggestionsOutputSchema = z.object({
-  recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de hasta 4 recomendaciones de menú de temporada. Si no hay ninguna, la lista estará vacía.")
+  recommendations: z.array(SeasonalSuggestionSchema).describe("Lista de recomendaciones. Puede estar vacía.")
 });
 export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
 
@@ -42,14 +42,14 @@ const prompt = ai.definePrompt({
   name: 'seasonalMenuSuggestionPrompt',
   input: {schema: SeasonalSuggestionsInputSchema},
   output: {schema: SeasonalSuggestionsOutputSchema},
-  prompt: `Eres un asistente experto en menús de cafetería. Tu tarea es:
+  prompt: `Eres un asistente de menú de cafetería. Tu tarea es:
 1.  Examinar la 'Lista de Elementos del Menú' y la 'Lista de Frutas de Temporada Actuales' proporcionadas.
 2.  Identificar HASTA 4 elementos de la 'Lista de Elementos del Menú' que sean especialmente relevantes para la temporada actual.
     *   PRIORIZA elementos cuyo NOMBRE o DESCRIPCIÓN contengan explícitamente una o más de las 'Lista de Frutas de Temporada Actuales'.
     *   Si no encuentras coincidencias directas, puedes considerar elementos que temáticamente encajen bien con la temporada o las frutas mencionadas.
 3.  Para CADA elemento del menú identificado:
     *   DEBES usar su 'ID' exacto (proporcionado en la entrada) como 'menuItemId'.
-    *   Proporciona una 'reason' concisa que explique por qué es una buena sugerencia de temporada (ej: "Contiene fresas de temporada.", "Ideal para disfrutar del mango fresco de esta estación.", "Un postre refrescante con maracuyá.").
+    *   Proporciona una 'reason' concisa que explique por qué es una buena sugerencia de temporada (ej: "Contiene fresas de temporada.", "Ideal para disfrutar del mango fresco de esta estación.").
 
 Formato de Salida ESTRICTO (Objeto JSON):
 La respuesta DEBE ser un objeto JSON.
@@ -57,11 +57,18 @@ Este objeto JSON DEBE tener una única clave de nivel superior llamada "recommen
 El valor de "recommendations" DEBE ser un array de objetos.
 
 Ejemplo de salida CON recomendaciones:
-\`{"recommendations": [{"menuItemId": "3", "reason": "Elaborado con palta fresca de temporada."}, {"menuItemId": "5", "reason": "Destaca el maracuyá de temporada."}]}\`
+{
+  "recommendations": [
+    {"menuItemId": "3", "reason": "Elaborado con palta fresca de temporada."},
+    {"menuItemId": "5", "reason": "Destaca el maracuyá de temporada."}
+  ]
+}
 
 Si NO encuentras NINGUNA recomendación adecuada después de tu análisis:
 La respuesta COMPLETA Y EXACTA debe ser:
-\`{"recommendations": []}\`
+{
+  "recommendations": []
+}
 NO añadas ningún texto, explicación o formato adicional si no hay recomendaciones.
 NO DEVUELVAS NUNCA un array vacío \`[]\` como respuesta de nivel superior, ni \`null\`. La respuesta SIEMPRE debe ser un objeto JSON que comience con \`{"recommendations": ...}\`.
 
@@ -103,9 +110,19 @@ const seasonalSuggestionFlow = ai.defineFlow(
     outputSchema: SeasonalSuggestionsOutputSchema,
   },
   async (input) => {
+    // The `prompt` call here will attempt to parse the LLM's response
+    // into `SeasonalSuggestionsOutputSchema`. If it fails, it will throw an error,
+    // which will be caught by the `try...catch` in the calling server action.
     const {output} = await prompt(input);
-    // Asegurarnos de que el output no sea null y tenga la estructura esperada.
-    // Si output es null o no tiene recommendations, devolvemos un array vacío.
-    return output || { recommendations: [] };
+
+    // This is a fallback. If 'output' is null or 'output.recommendations' is missing
+    // after a supposedly successful parse (less likely with strict Zod), return empty.
+    if (!output || !output.recommendations) {
+      console.warn(
+        "Genkit flow 'seasonalSuggestionFlow' received an output from the prompt that was null or missing 'recommendations'. Returning an empty array."
+      );
+      return { recommendations: [] };
+    }
+    return output;
   }
 );
