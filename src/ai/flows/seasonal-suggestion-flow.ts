@@ -49,16 +49,30 @@ const prompt = ai.definePrompt({
 4.  Para cada elemento del menú identificado, DEBES usar su 'ID' exacto como 'menuItemId'.
 5.  Para cada uno, proporciona una 'reason' que indique brevemente qué fruta(s) de temporada contiene. Ejemplo: "Contiene fresas de temporada." o "Elaborado con palta (aguacate) de temporada."
 
-Formato de Salida (JSON Object):
--   El objeto JSON DEBE tener una única clave de nivel superior: "recommendations".
--   El valor de "recommendations" DEBE ser un array de objetos.
--   Cada objeto en el array "recommendations" DEBE tener:
-    -   "menuItemId": El ID exacto de la 'Lista de Elementos del Menú'.
-    -   "reason": Una breve explicación mencionando la fruta de temporada.
--   Si NINGÚN elemento del menú contiene explícitamente alguna fruta de temporada, el array "recommendations" DEBE estar vacío.
-Ejemplo de salida con recomendaciones: \`{"recommendations": [{"menuItemId": "3", "reason": "Contiene palta fresca de temporada."}, {"menuItemId": "5", "reason": "Destaca el maracuyá de temporada."}]}\`
-Ejemplo de salida SIN recomendaciones: \`{"recommendations": []}\`
-NO devuelvas un array vacío \`[]\` o \`null\` como respuesta de nivel superior. La respuesta siempre debe ser un objeto JSON con la clave "recommendations".
+Formato de Salida ESTRICTO (JSON Object):
+La respuesta DEBE ser un objeto JSON.
+Este objeto JSON DEBE tener una única clave de nivel superior llamada "recommendations".
+El valor de "recommendations" DEBE ser un array de objetos.
+
+Si encuentras recomendaciones:
+Cada objeto en el array "recommendations" DEBE tener EXACTAMENTE dos claves:
+    1.  "menuItemId": (string) El ID exacto del elemento del menú de la lista proporcionada.
+    2.  "reason": (string) Una breve explicación mencionando la fruta de temporada relevante. Ejemplo: "Contiene fresas de temporada."
+
+Si NO encuentras NINGUNA recomendación que coincida:
+La respuesta COMPLETA Y EXACTA debe ser:
+\`{"recommendations": []}\`
+NO añadas ningún texto, explicación o formato adicional si no hay recomendaciones.
+
+Ejemplo de salida CON recomendaciones:
+\`{"recommendations": [{"menuItemId": "3", "reason": "Contiene palta fresca de temporada."}, {"menuItemId": "5", "reason": "Destaca el maracuyá de temporada."}]}\`
+
+Ejemplo de salida SIN recomendaciones (respuesta exacta esperada):
+\`{"recommendations": []}\`
+
+NO DEVUELVAS NUNCA un array vacío \`[]\` como respuesta de nivel superior.
+NO DEVUELVAS NUNCA \`null\` como respuesta de nivel superior.
+La respuesta DEBE ser SIEMPRE un objeto JSON que comience con \`{"recommendations": ...}\`.
 
 Lista de Elementos del Menú:
 {{#each menuItems}}
