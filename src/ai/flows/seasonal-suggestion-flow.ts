@@ -17,18 +17,18 @@ const SimplifiedMenuItemSchema = z.object({
   description: z.string()
 });
 
-export const SeasonalSuggestionsInputSchema = z.object({
+const SeasonalSuggestionsInputSchema = z.object({
   menuItems: z.array(SimplifiedMenuItemSchema).describe("Lista de elementos del menú con su ID, nombre y descripción."),
   seasonalFruits: z.array(z.string()).describe("Una lista de frutas actualmente en temporada.")
 });
 export type SeasonalSuggestionsInput = z.infer<typeof SeasonalSuggestionsInputSchema>;
 
-export const SeasonalSuggestionSchema = z.object({
+const SeasonalSuggestionSchema = z.object({
   menuItemId: z.string().describe("El ID del elemento del menú recomendado."),
   reason: z.string().describe("Una breve y atractiva razón por la cual este artículo es una buena elección de temporada (por ejemplo, '¡Destaca las fresas frescas de temporada!').")
 });
 
-export const SeasonalSuggestionsOutputSchema = z.object({
+const SeasonalSuggestionsOutputSchema = z.object({
   recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de hasta 3-4 recomendaciones de menú de temporada.")
 });
 export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
@@ -72,3 +72,4 @@ const seasonalSuggestionFlow = ai.defineFlow(
     return output || { recommendations: [] };
   }
 );
+
