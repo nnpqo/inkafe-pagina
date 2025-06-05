@@ -10,7 +10,8 @@ import { initialCafeTables, CafeTable } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle, Info } from 'lucide-react';
+import { CheckCircle, Info, User, Ban } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function ReservationsPage() {
   const [tables, setTables] = useState<CafeTable[]>(initialCafeTables);
@@ -46,7 +47,7 @@ export default function ReservationsPage() {
 
     toast({
       title: "¡Reserva Confirmada!",
-      description: `Tu mesa ${tables.find(t=>t.id === values.tableId)?.name} ha sido reservada para ${values.guests} personas el ${values.date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} a las ${values.time}.`,
+      description: `Tu mesa ${tables.find(t=>t.id === values.tableId)?.name} ha sido reservada para ${values.guests} personas el ${new Date(values.date).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} a las ${values.time}.`,
     });
     
     // Optional: auto-hide confirmation after some time
