@@ -33,8 +33,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '3',
-    name: 'Tostadas con Palta',
-    description: 'Pan artesanal tostado con palta fresca y un toque de limón.',
+    name: 'Tostadas con Palta Fresca',
+    description: 'Pan artesanal tostado con palta fresca de temporada y un toque de limón.',
     price: 'S/ 15.00',
     category: 'Desayunos',
     tags: ['vegano'],
@@ -53,8 +53,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '5',
-    name: 'Cheesecake de Maracuyá',
-    description: 'Cremoso cheesecake con una cubierta de pulpa de maracuyá.',
+    name: 'Cheesecake de Maracuyá de Temporada',
+    description: 'Cremoso cheesecake con una cubierta de pulpa de maracuyá fresca de temporada.',
     price: 'S/ 14.00',
     category: 'Postres',
     tags: [],
@@ -63,8 +63,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '6',
-    name: 'Jugo de Lúcuma Fresco',
-    description: 'Jugo natural hecho con lúcuma fresca de temporada.',
+    name: 'Jugo de Lúcuma Fresco de Estación',
+    description: 'Jugo natural hecho con lúcuma fresca de temporada, un superalimento peruano.',
     price: 'S/ 12.00',
     category: 'Bebidas',
     tags: ['vegano', 'sin gluten'],
@@ -73,13 +73,13 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '7',
-    name: 'Ensalada Vegana Power',
-    description: 'Mix de hojas verdes, quinua, palta, tomate cherry y vinagreta especial.',
+    name: 'Ensalada Vegana Power con Fresas',
+    description: 'Mix de hojas verdes, quinua, palta, tomate cherry y fresas de temporada con vinagreta especial.',
     price: 'S/ 20.00',
     category: 'Almuerzos',
     tags: ['vegano', 'sin gluten'],
     imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'vegan salad'
+    imageHint: 'vegan salad strawberries'
   },
   {
     id: '8',
@@ -176,4 +176,13 @@ export const availableTimes: string[] = [
   "08:00", "09:00", "10:00", "11:00", "12:00",
   "13:00", "14:00", "15:00", "16:00", "17:00",
   "18:00", "19:00", "20:00",
+];
+
+// Lista de frutas de temporada (ejemplos)
+export const seasonalFruits: string[] = [
+  'Mango',
+  'Fresa',
+  'Lúcuma',
+  'Palta', // Considerada fruta en botánica
+  'Maracuyá'
 ];

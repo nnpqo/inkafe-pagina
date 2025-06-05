@@ -4,7 +4,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { SectionTitle } from '@/components/SectionTitle';
 import { MenuItemCard } from '@/components/MenuItemCard';
-import { menuItems as allMenuItems } from '@/lib/data';
+import { menuItems as allMenuItems, seasonalFruits } from '@/lib/data';
 import type { MenuItem } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,14 +34,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2 } from 'lucide-react';
+import { Download, ShoppingCart, Trash2, MinusCircle, PlusCircle, ShoppingBag, Loader2, Sparkles, Info } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { getMenuSuggestions } from './actions'; // Nueva acción
+import type { SeasonalSuggestionSchema } from '@/ai/flows/seasonal-suggestion-flow';
 
 const categories = ['Todas', ...Array.from(new Set(allMenuItems.map(item => item.category)))];
 
 interface CartItem {
   item: MenuItem;
   quantity: number;
+}
+
+interface SuggestedItem extends MenuItem {
+  suggestionReason: string;
 }
 
 export default function MenuPage() {
@@ -55,9 +61,39 @@ export default function MenuPage() {
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const { toast } = useToast();
 
+  const [seasonalSuggestions, setSeasonalSuggestions] = useState<SuggestedItem[]>([]);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(true);
+
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    const fetchSuggestions = async () => {
+      setIsLoadingSuggestions(true);
+      const simplifiedMenuItems = allMenuItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+      }));
+      const result = await getMenuSuggestions(simplifiedMenuItems, seasonalFruits);
+      if ("error" in result) {
+        console.error(result.error);
+        toast({ title: "Error", description: "No se pudieron cargar las sugerencias de temporada.", variant: "destructive" });
+        setSeasonalSuggestions([]);
+      } else {
+        const mappedSuggestions: SuggestedItem[] = result.recommendations
+          .map(rec => {
+            const menuItem = allMenuItems.find(item => item.id === rec.menuItemId);
+            if (menuItem) {
+              return { ...menuItem, suggestionReason: rec.reason };
+            }
+            return null;
+          })
+          .filter((item): item is SuggestedItem => item !== null);
+        setSeasonalSuggestions(mappedSuggestions);
+      }
+      setIsLoadingSuggestions(false);
+    };
+    fetchSuggestions();
+  }, [toast]);
 
   const filteredItems = useMemo(() => {
     return allMenuItems.filter(item => {
@@ -110,17 +146,17 @@ export default function MenuPage() {
         cartItem.item.id === itemIdToUpdate
           ? { ...cartItem, quantity: Math.max(1, cartItem.quantity + change) }
           : cartItem
-      ).filter(cartItem => cartItem.quantity > 0) // Ensure quantity doesn't go below 1, or remove if it does
+      ).filter(cartItem => cartItem.quantity > 0) 
     );
   };
   
    const handleDirectCartQuantityChange = (itemIdToUpdate: string, newQuantityStr: string) => {
     const newQuantity = parseInt(newQuantityStr, 10);
-    if (newQuantityStr === "" ) { // Allow empty for typing
+    if (newQuantityStr === "" ) { 
        setCartItems(prevCartItems =>
         prevCartItems.map(cartItem =>
           cartItem.item.id === itemIdToUpdate
-            ? { ...cartItem, quantity: 0 } // Temporarily set to 0 or a sentinel
+            ? { ...cartItem, quantity: 0 } 
             : cartItem
         )
       );
@@ -136,7 +172,6 @@ export default function MenuPage() {
         )
       );
     } else if (!isNaN(newQuantity) && newQuantity <= 0) {
-       // If typed 0 or less, effectively remove or set to 1 on blur
        handleRemoveFromCart(itemIdToUpdate);
     }
   };
@@ -144,10 +179,9 @@ export default function MenuPage() {
   const handleCartQuantityInputBlur = (itemIdToUpdate: string, currentQuantity: number) => {
     if (currentQuantity === 0 || isNaN(currentQuantity)) {
       const itemInCart = cartItems.find(ci => ci.item.id === itemIdToUpdate);
-      if (itemInCart && itemInCart.quantity === 0) { // Check if it was the temporary 0
+      if (itemInCart && itemInCart.quantity === 0) { 
          handleRemoveFromCart(itemIdToUpdate);
       } else {
-        // If it was NaN or invalid, reset to 1 (or previous valid state)
          setCartItems(prevCartItems =>
           prevCartItems.map(cartItem =>
             cartItem.item.id === itemIdToUpdate
@@ -158,7 +192,6 @@ export default function MenuPage() {
       }
     }
   };
-
 
   const cartTotal = useMemo(() => {
     return cartItems.reduce((total, cartItem) => {
@@ -177,10 +210,7 @@ export default function MenuPage() {
     }
 
     setIsPlacingOrder(true);
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-
-    console.log("Pedido Realizado:", cartItems.map(ci => ({ id: ci.item.id, name: ci.item.name, quantity: ci.quantity })), "Total:", formatCurrency(cartTotal));
     
     setCartItems([]);
     setOrderConfirmed(true);
@@ -190,7 +220,7 @@ export default function MenuPage() {
       description: "Tu pedido ha sido realizado con éxito. Gracias por tu compra.",
     });
 
-    setTimeout(() => setOrderConfirmed(false), 7000); // Hide confirmation after 7 seconds
+    setTimeout(() => setOrderConfirmed(false), 7000);
   };
 
   if (!isMounted) {
@@ -207,8 +237,42 @@ export default function MenuPage() {
       <div className="container">
         <SectionTitle title="Nuestro Menú Digital" subtitle="Explora nuestra variedad de cafés, postres, desayunos y más. Filtra según tus preferencias y arma tu pedido." centered />
 
+        {/* Seasonal Suggestions Section */}
+        <section className="mb-12">
+          <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary mb-2 flex items-center">
+            <Sparkles className="mr-3 h-7 w-7 text-accent" />
+            Especiales de Temporada
+          </h3>
+          <p className="text-muted-foreground mb-6">¡Descubre nuestros platos destacados con los ingredientes más frescos de la estación!</p>
+          {isLoadingSuggestions ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {[1,2,3].map(i => (
+                <Card key={i} className="shadow-lg">
+                  <CardContent className="p-6 flex flex-col items-center justify-center h-[200px]">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary mb-2" />
+                    <p className="text-muted-foreground">Cargando sugerencias...</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : seasonalSuggestions.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {seasonalSuggestions.map((item) => (
+                <div key={item.id} className="flex flex-col">
+                  <MenuItemCard item={item} onAddToCart={handleAddToCart} />
+                  <p className="mt-2 text-sm text-accent font-medium bg-accent/10 p-2 rounded-md border border-accent/30">
+                    <Info size={14} className="inline mr-1" /> {item.suggestionReason}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-lg text-muted-foreground py-8">No hay sugerencias especiales por el momento. ¡Todo nuestro menú es delicioso!</p>
+          )}
+        </section>
+
+
         <div className="mb-8 p-6 bg-card rounded-lg shadow-md flex flex-col md:flex-row gap-6 items-center justify-between">
-          {/* Filter controls */}
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
             <div className="w-full sm:w-auto">
               <Label htmlFor="category-select" className="text-sm font-medium text-foreground/80 mb-1 block">Categoría</Label>
@@ -237,7 +301,6 @@ export default function MenuPage() {
           </Button>
         </div>
 
-        {/* Order Confirmation Alert */}
         {orderConfirmed && (
           <Alert className="mb-8 bg-green-50 border-green-500 text-green-700">
             <ShoppingBag className="h-5 w-5 text-green-700" />
@@ -248,7 +311,6 @@ export default function MenuPage() {
           </Alert>
         )}
 
-        {/* Order Summary Section */}
         {cartItems.length > 0 && !orderConfirmed && (
           <Card className="mb-12 shadow-lg">
             <CardHeader>
@@ -330,8 +392,11 @@ export default function MenuPage() {
            </div>
         )}
 
+        {/* Title for the rest of the menu */}
+        <h3 className="text-2xl md:text-3xl font-headline font-semibold text-primary my-8 pt-8 border-t border-border">
+          Todo Nuestro Menú
+        </h3>
 
-        {/* Menu Items Grid */}
         {filteredItems.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {filteredItems.map((item: MenuItem) => (
