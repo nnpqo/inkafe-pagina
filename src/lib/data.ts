@@ -1,3 +1,4 @@
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -144,4 +145,35 @@ export const eventItems: EventItem[] = [
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'coffee promotion'
   }
+];
+
+export type TableStatus = 'available' | 'selected' | 'reserved';
+
+export interface CafeTable {
+  id: string;
+  name: string;
+  capacity: number;
+  status: TableStatus;
+  position: {
+    row: number;
+    col: number;
+  };
+}
+
+export const initialCafeTables: CafeTable[] = [
+  { id: 't1', name: 'M1', capacity: 2, status: 'available', position: { row: 1, col: 1 } },
+  { id: 't2', name: 'M2', capacity: 4, status: 'available', position: { row: 1, col: 2 } },
+  { id: 't3', name: 'M3', capacity: 2, status: 'reserved', position: { row: 1, col: 3 } },
+  { id: 't4', name: 'M4', capacity: 6, status: 'available', position: { row: 2, col: 1 } },
+  { id: 't5', name: 'M5', capacity: 4, status: 'available', position: { row: 2, col: 2 } },
+  { id: 't6', name: 'M6', capacity: 2, status: 'available', position: { row: 2, col: 3 } },
+  { id: 't7', name: 'V1', capacity: 1, status: 'available', position: { row: 3, col: 1 } }, // Ventana
+  { id: 't8', name: 'V2', capacity: 1, status: 'available', position: { row: 3, col: 2 } }, // Ventana
+  { id: 't9', name: 'S1', capacity: 8, status: 'available', position: { row: 4, col: 1 } }, // Sofá
+];
+
+export const availableTimes: string[] = [
+  "08:00", "09:00", "10:00", "11:00", "12:00",
+  "13:00", "14:00", "15:00", "16:00", "17:00",
+  "18:00", "19:00", "20:00",
 ];

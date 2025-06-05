@@ -1,3 +1,4 @@
+
 import { SectionTitle } from '@/components/SectionTitle';
 import { ContactForm } from '@/components/ContactForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,7 +12,7 @@ export default function ContactPage() {
         <SectionTitle title="Contáctanos" subtitle="Estamos aquí para ayudarte. Envíanos un mensaje o visita nuestra cafetería." centered />
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
-          <Card className="shadow-lg" id="reservar">
+          <Card className="shadow-lg" id="contact-form">
             <CardHeader>
               <CardTitle className="text-2xl text-primary">Envíanos un Mensaje</CardTitle>
             </CardHeader>

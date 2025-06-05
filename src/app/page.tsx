@@ -1,12 +1,13 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { SectionTitle } from '@/components/SectionTitle';
-import { ArrowRight, Coffee, CalendarDays, Users } from 'lucide-react';
+import { ArrowRight, Coffee, CalendarDays, Users, BookmarkPlus } from 'lucide-react';
 import { menuItems, eventItems } from '@/lib/data';
 import type { MenuItem, EventItem } from '@/lib/data';
-import { ContactForm } from '@/components/ContactForm';
+// Eliminamos la importación de ContactForm ya que la sección de reserva de mesas ahora tiene su propia página.
 
 export default function Home() {
   const featuredMenuItems = menuItems.slice(0, 3);
@@ -37,7 +38,7 @@ export default function Home() {
               <Link href="/menu">Ver Menú <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
             <Button asChild variant="secondary" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105">
-              <Link href="/contact#reservar">Reservar</Link>
+              <Link href="/reservations">Reservar Mesa <BookmarkPlus className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
         </div>
@@ -106,17 +107,33 @@ export default function Home() {
                 </CardContent>
               </Card>
             ))}
+             {upcomingEvents.length === 0 && (
+                <p className="text-center text-lg text-muted-foreground md:col-span-2 py-12">
+                    No hay eventos programados en este momento. ¡Vuelve pronto!
+                </p>
+            )}
           </div>
+           {upcomingEvents.length > 0 && (
+            <div className="text-center mt-12">
+                 <Button asChild size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                    <Link href="/events">Ver Todos los Eventos</Link>
+                </Button>
+            </div>
+            )}
         </div>
       </section>
 
-      {/* Table Reservation Section */}
+      {/* Call to Action for Reservations */}
       <section className="py-16 md:py-24 bg-card">
-        <div className="container max-w-3xl">
-          <SectionTitle title="Reserva tu Mesa" subtitle="Asegura tu lugar en Inkafe y disfruta de una experiencia inolvidable. Completa el formulario y nos pondremos en contacto." centered />
-          <div className="mt-8">
-            <ContactForm />
-          </div>
+        <div className="container max-w-3xl text-center">
+          <SectionTitle 
+            title="¿Listo para Visitarnos?" 
+            subtitle="Asegura tu mesa y disfruta de la experiencia Inkafe. Es rápido y fácil." 
+            centered 
+          />
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 mt-4">
+            <Link href="/reservations">Reservar una Mesa Ahora <BookmarkPlus className="ml-2 h-5 w-5" /></Link>
+          </Button>
         </div>
       </section>
     </>
