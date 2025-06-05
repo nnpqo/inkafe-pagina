@@ -24,12 +24,12 @@ const SeasonalSuggestionsInputSchema = z.object({
 export type SeasonalSuggestionsInput = z.infer<typeof SeasonalSuggestionsInputSchema>;
 
 const SeasonalSuggestionSchema = z.object({
-  menuItemId: z.string().describe("El ID EXACTO de un elemento del menú proporcionado."),
-  reason: z.string().describe("Breve explicación de por qué es relevante para la temporada, mencionando la fruta. (ej: 'Contiene fresas de temporada').")
+  menuItemId: z.string().describe("El ID EXACTO de un elemento del menú proporcionado en la entrada."),
+  reason: z.string().describe("Breve explicación de por qué es relevante para la temporada, mencionando la fruta o el tema estacional. (ej: 'Contiene fresas de temporada', 'Perfecto para el verano con mango fresco').")
 });
 
 const SeasonalSuggestionsOutputSchema = z.object({
-  recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de hasta 4 recomendaciones de menú de temporada basadas en coincidencias directas con las frutas. Si no hay ninguna, la lista estará vacía.")
+  recommendations: z.array(SeasonalSuggestionSchema).describe("Una lista de hasta 4 recomendaciones de menú de temporada. Si no hay ninguna, la lista estará vacía.")
 });
 export type SeasonalSuggestionsOutput = z.infer<typeof SeasonalSuggestionsOutputSchema>;
 
@@ -42,37 +42,28 @@ const prompt = ai.definePrompt({
   name: 'seasonalMenuSuggestionPrompt',
   input: {schema: SeasonalSuggestionsInputSchema},
   output: {schema: SeasonalSuggestionsOutputSchema},
-  prompt: `Eres un asistente de análisis de menú. Tu tarea es:
-1.  Examinar la 'Lista de Elementos del Menú' proporcionada.
-2.  Examinar la 'Lista de Frutas de Temporada Actuales' proporcionada.
-3.  Identificar elementos de la 'Lista de Elementos del Menú' cuyo NOMBRE o DESCRIPCIÓN contenga explícitamente una o más de las 'Lista de Frutas de Temporada Actuales'.
-4.  Para cada elemento del menú identificado, DEBES usar su 'ID' exacto como 'menuItemId'.
-5.  Para cada uno, proporciona una 'reason' que indique brevemente qué fruta(s) de temporada contiene. Ejemplo: "Contiene fresas de temporada." o "Elaborado con palta (aguacate) de temporada."
+  prompt: `Eres un asistente experto en menús de cafetería. Tu tarea es:
+1.  Examinar la 'Lista de Elementos del Menú' y la 'Lista de Frutas de Temporada Actuales' proporcionadas.
+2.  Identificar HASTA 4 elementos de la 'Lista de Elementos del Menú' que sean especialmente relevantes para la temporada actual.
+    *   PRIORIZA elementos cuyo NOMBRE o DESCRIPCIÓN contengan explícitamente una o más de las 'Lista de Frutas de Temporada Actuales'.
+    *   Si no encuentras coincidencias directas, puedes considerar elementos que temáticamente encajen bien con la temporada o las frutas mencionadas.
+3.  Para CADA elemento del menú identificado:
+    *   DEBES usar su 'ID' exacto (proporcionado en la entrada) como 'menuItemId'.
+    *   Proporciona una 'reason' concisa que explique por qué es una buena sugerencia de temporada (ej: "Contiene fresas de temporada.", "Ideal para disfrutar del mango fresco de esta estación.", "Un postre refrescante con maracuyá.").
 
-Formato de Salida ESTRICTO (JSON Object):
+Formato de Salida ESTRICTO (Objeto JSON):
 La respuesta DEBE ser un objeto JSON.
 Este objeto JSON DEBE tener una única clave de nivel superior llamada "recommendations".
 El valor de "recommendations" DEBE ser un array de objetos.
 
-Si encuentras recomendaciones:
-Cada objeto en el array "recommendations" DEBE tener EXACTAMENTE dos claves:
-    1.  "menuItemId": (string) El ID exacto del elemento del menú de la lista proporcionada.
-    2.  "reason": (string) Una breve explicación mencionando la fruta de temporada relevante. Ejemplo: "Contiene fresas de temporada."
+Ejemplo de salida CON recomendaciones:
+\`{"recommendations": [{"menuItemId": "3", "reason": "Elaborado con palta fresca de temporada."}, {"menuItemId": "5", "reason": "Destaca el maracuyá de temporada."}]}\`
 
-Si NO encuentras NINGUNA recomendación que coincida:
+Si NO encuentras NINGUNA recomendación adecuada después de tu análisis:
 La respuesta COMPLETA Y EXACTA debe ser:
 \`{"recommendations": []}\`
 NO añadas ningún texto, explicación o formato adicional si no hay recomendaciones.
-
-Ejemplo de salida CON recomendaciones:
-\`{"recommendations": [{"menuItemId": "3", "reason": "Contiene palta fresca de temporada."}, {"menuItemId": "5", "reason": "Destaca el maracuyá de temporada."}]}\`
-
-Ejemplo de salida SIN recomendaciones (respuesta exacta esperada):
-\`{"recommendations": []}\`
-
-NO DEVUELVAS NUNCA un array vacío \`[]\` como respuesta de nivel superior.
-NO DEVUELVAS NUNCA \`null\` como respuesta de nivel superior.
-La respuesta DEBE ser SIEMPRE un objeto JSON que comience con \`{"recommendations": ...}\`.
+NO DEVUELVAS NUNCA un array vacío \`[]\` como respuesta de nivel superior, ni \`null\`. La respuesta SIEMPRE debe ser un objeto JSON que comience con \`{"recommendations": ...}\`.
 
 Lista de Elementos del Menú:
 {{#each menuItems}}
@@ -118,4 +109,3 @@ const seasonalSuggestionFlow = ai.defineFlow(
     return output || { recommendations: [] };
   }
 );
-

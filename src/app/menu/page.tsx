@@ -77,11 +77,13 @@ export default function MenuPage() {
         description: item.description,
       }));
       const result = await getMenuSuggestions(simplifiedMenuItems, seasonalFruits);
+      console.log("Seasonal suggestions result from server action:", result); // Log para diagnóstico
+
       if ("error" in result) {
         console.error(result.error);
         toast({ title: "Error", description: "No se pudieron cargar las sugerencias de temporada.", variant: "destructive" });
         setSeasonalSuggestions([]);
-      } else {
+      } else if (result && result.recommendations) {
         const mappedSuggestions: SuggestedItem[] = result.recommendations
           .map(rec => {
             const menuItem = allMenuItems.find(item => item.id === rec.menuItemId);
@@ -92,6 +94,9 @@ export default function MenuPage() {
           })
           .filter((item): item is SuggestedItem => item !== null);
         setSeasonalSuggestions(mappedSuggestions);
+      } else {
+        console.error("Unexpected result structure for seasonal suggestions:", result);
+        setSeasonalSuggestions([]);
       }
       setIsLoadingSuggestions(false);
     };
@@ -305,7 +310,7 @@ export default function MenuPage() {
         </div>
 
         {orderConfirmed && (
-          <Alert className="mb-8 bg-green-50 border-green-500 text-green-700">
+          <Alert variant="default" className="mb-8 bg-green-50 border-green-500 text-green-700">
             <ShoppingBag className="h-5 w-5 text-green-700" />
             <AlertTitle className="font-semibold">¡Pedido Realizado con Éxito!</AlertTitle>
             <AlertDescription>
