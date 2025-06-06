@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[calc(100vh-5rem)] min-h-[500px] flex items-center justify-center text-center text-white">
+      <section className="relative h-[calc(100vh-5rem)] min-h-[500px] flex items-center justify-center text-center text-primary-foreground">
         <Image
           src="https://placehold.co/1920x1080.png"
           alt="Interior acogedor de Inkafe en Cochabamba con detalles andinos"
@@ -36,7 +36,7 @@ export default function Home() {
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105">
               <Link href="/menu">Ver Nuestro Menú <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
-            <Button asChild variant="secondary" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105">
+            <Button asChild variant="secondary" size="lg" className="shadow-lg transition-transform hover:scale-105">
               <Link href="/reservations">Reservar Mesa <BookmarkPlus className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
@@ -105,7 +105,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-foreground/80 mb-4 text-sm">{event.description}</p>
-                  <Button asChild variant="default" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <Button asChild variant="secondary" className="w-full">
                     <Link href="/events">Más Detalles del Evento <CalendarDays className="ml-2 h-5 w-5" /></Link>
                   </Button>
                 </CardContent>
