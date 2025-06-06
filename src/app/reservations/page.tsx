@@ -66,8 +66,8 @@ export default function ReservationsPage() {
         />
 
         {reservationConfirmed && confirmedReservationDetails && (
-          <Alert variant="default" className="mb-8 bg-green-50 border-green-500 text-green-700">
-            <CheckCircle className="h-5 w-5 text-green-700" />
+          <Alert variant="default" className="mb-8 bg-accent/10 border-accent text-accent">
+            <CheckCircle className="h-5 w-5 text-accent" />
             <AlertTitle className="font-semibold">¡Reserva Realizada con Éxito!</AlertTitle>
             <AlertDescription>
               Has reservado la mesa <strong>{tables.find(t=>t.id === confirmedReservationDetails.tableId)?.name}</strong> para <strong>{confirmedReservationDetails.guests}</strong> personas
@@ -90,7 +90,7 @@ export default function ReservationsPage() {
                 onTableSelect={handleTableSelect}
               />
                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
-                <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-1 text-green-500" /> Disponible</div>
+                <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-1 text-accent" /> Disponible</div>
                 <div className="flex items-center"><User className="h-4 w-4 mr-1 text-blue-500" /> Seleccionada</div>
                 <div className="flex items-center"><Ban className="h-4 w-4 mr-1 text-red-500" /> Reservada</div>
               </div>

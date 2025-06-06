@@ -218,8 +218,8 @@ export default function MenuPage() {
         <SectionTitle title="Nuestro Menú Inkafe" subtitle="Explora la riqueza de sabores bolivianos: cafés de altura, delicias tradicionales, postres y más. ¡Usa los filtros y arma tu pedido!" centered />
 
         {orderConfirmed && (
-          <Alert variant="default" className="mb-8 bg-green-50 border-green-500 text-green-700">
-            <ShoppingBag className="h-5 w-5 text-green-700" />
+          <Alert variant="default" className="mb-8 bg-accent/10 border-accent text-accent">
+            <ShoppingBag className="h-5 w-5 text-accent" />
             <AlertTitle className="font-semibold">¡Pedido Realizado con Éxito!</AlertTitle>
             <AlertDescription>
               Gracias por tu compra en Inkafe. ¡Esperamos que disfrutes nuestros sabores cochabambinos!
@@ -229,8 +229,7 @@ export default function MenuPage() {
 
         <div className="mb-8 p-6 bg-card rounded-lg shadow-md">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-end">
-            {/* Columna para Búsqueda y filtros relacionados */}
-            <div className="space-y-4 lg:col-span-2">
+            <div className="lg:col-span-2 space-y-4">
               <div>
                 <Label htmlFor="search-input" className="text-sm font-medium text-foreground/80 mb-1 block">Buscar Producto</Label>
                 <div className="relative">
@@ -257,7 +256,6 @@ export default function MenuPage() {
               </div>
             </div>
 
-            {/* Columna para Categoría */}
             <div className="w-full lg:col-span-1">
               <Label htmlFor="category-select" className="text-sm font-medium text-foreground/80 mb-1 block">Filtrar por Categoría</Label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -289,9 +287,9 @@ export default function MenuPage() {
                   ))}
                 </div>
               ) : (
-                <Alert variant="default" className="bg-amber-50 border-amber-400 text-amber-700">
-                    <Sparkles className="h-5 w-5 text-amber-700" />
-                    <AlertTitle className="font-semibold">¡Ajusta tus Filtros!</AlertTitle>
+                <Alert variant="default" className="bg-card border-border text-foreground/80">
+                    <Sparkles className="h-5 w-5 text-accent" />
+                    <AlertTitle className="font-semibold text-primary">¡Ajusta tus Filtros!</AlertTitle>
                     <AlertDescription>
                     No hay especiales destacados que coincidan con tus filtros actuales. Prueba cambiar tu búsqueda o selección para descubrir nuestras delicias.
                     </AlertDescription>
@@ -311,9 +309,9 @@ export default function MenuPage() {
                   ))}
                 </div>
               ) : (
-                <Alert variant="default" className="bg-blue-50 border-blue-400 text-blue-700 mt-8">
-                  <Search className="h-5 w-5 text-blue-700" />
-                  <AlertTitle className="font-semibold">¡Sin Coincidencias!</AlertTitle>
+                <Alert variant="default" className="bg-card border-border text-foreground/80 mt-8">
+                  <Search className="h-5 w-5 text-accent" />
+                  <AlertTitle className="font-semibold text-primary">¡Sin Coincidencias!</AlertTitle>
                   <AlertDescription>
                     No encontramos productos que coincidan con tus filtros o término de búsqueda. ¡Intenta con otros sabores de nuestra Bolivia!
                   </AlertDescription>
@@ -387,7 +385,7 @@ export default function MenuPage() {
                         <div className="text-xl font-semibold">
                           Total: {formatCurrency(cartTotal)}
                         </div>
-                        <Button onClick={handlePlaceOrder} size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isPlacingOrder || cartItems.length === 0}>
+                        <Button onClick={handlePlaceOrder} size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isPlacingOrder || cartItems.length === 0}>
                           {isPlacingOrder ? (
                             <>
                               <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Procesando Pedido...

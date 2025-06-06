@@ -19,7 +19,7 @@ export function TableLayout({ tables, selectedTableId, onTableSelect }: TableLay
   const getTableStatusIcon = (status: TableStatus) => {
     switch (status) {
       case 'available':
-        return <CheckCircle className="h-4 w-4 mr-1" />;
+        return <CheckCircle className="h-4 w-4 mr-1 text-accent" />;
       case 'selected':
         return <User className="h-4 w-4 mr-1" />;
       case 'reserved':

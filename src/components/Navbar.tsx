@@ -32,11 +32,11 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full bg-primary text-primary-foreground">
       <div className="container flex h-20 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Coffee className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold font-headline text-primary">Inkafe</span>
+          <Coffee className="h-8 w-8" />
+          <span className="text-2xl font-bold font-headline">Inkafe</span>
         </Link>
 
         <nav className="hidden md:flex gap-6 items-center">
@@ -45,8 +45,8 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "text-lg font-medium transition-colors hover:text-primary",
-                pathname === link.href ? "text-primary" : "text-foreground/70"
+                "text-lg font-medium transition-colors hover:text-primary-foreground/80",
+                pathname === link.href ? "text-primary-foreground font-semibold" : "text-primary-foreground/70"
               )}
             >
               {link.label}
@@ -57,24 +57,24 @@ export function Navbar() {
         <div className="md:hidden">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="hover:bg-primary/80 focus-visible:ring-primary-foreground">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Abrir menú</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background p-6">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-primary text-primary-foreground p-6">
               <div className="flex flex-col gap-6">
                 <Link href="/" className="flex items-center gap-2 mb-4" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Coffee className="h-8 w-8 text-primary" />
-                  <span className="text-2xl font-bold font-headline text-primary">Inkafe</span>
+                  <Coffee className="h-8 w-8" />
+                  <span className="text-2xl font-bold font-headline">Inkafe</span>
                 </Link>
                 {navLinks.map((link) => (
                   <SheetClose key={link.href} asChild>
                     <Link
                        href={link.href}
                        className={cn(
-                         "text-xl font-medium transition-colors hover:text-primary py-2",
-                         pathname === link.href ? "text-primary" : "text-foreground/80"
+                         "text-xl font-medium transition-colors hover:text-primary-foreground/80 py-2",
+                         pathname === link.href ? "text-primary-foreground font-semibold" : "text-primary-foreground/70"
                        )}
                        onClick={() => setIsMobileMenuOpen(false)}
                     >
