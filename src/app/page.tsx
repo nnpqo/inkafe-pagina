@@ -46,10 +46,10 @@ export default function Home() {
       {/* About Us Snippet */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container">
-          <SectionTitle title="Bienvenido a Inkafe Cochabamba" subtitle="Donde cada taza cuenta una historia de nuestra tierra y cada rincón invita a la calma y la tradición." centered />
+          <SectionTitle title="Bienvenido a Inkafe" subtitle="Donde cada taza cuenta una historia de nuestra tierra y cada rincón invita a la calma y la tradición cochabambina." centered />
           <div className="max-w-3xl mx-auto text-center text-lg text-foreground/80 mb-8">
             <p className="mb-4">
-              En Inkafe, celebramos la magia de los pequeños momentos: una conversación amena al calor de un api, el aroma embriagador de nuestro café de los Yungas recién tostado, la calidez de un espacio que se siente como casa. Somos más que una cafetería en Cochabamba; somos un punto de encuentro, un refugio para el alma, donde estudiantes, teletrabajadores y todos quienes buscan una pausa reconfortante pueden disfrutar de lo mejor de Bolivia.
+              En Inkafe, celebramos la magia de los pequeños momentos: una conversación amena al calor de un api, el aroma embriagador de nuestro café de los Yungas recién tostado, la calidez de un espacio que se siente como casa. Somos más que una cafetería en Cochabamba; somos un punto de encuentro, un refugio para el alma, donde todos quienes buscan una pausa reconfortante pueden disfrutar de lo mejor de Bolivia.
             </p>
             <Button asChild variant="link" className="text-primary text-lg">
               <Link href="/about">Conoce Nuestra Historia y Pasión <Users className="ml-2 h-5 w-5" /></Link>
@@ -105,7 +105,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-foreground/80 mb-4 text-sm">{event.description}</p>
-                  <Button asChild variant="secondary" className="w-full">
+                  <Button asChild variant="default" className="w-full">
                     <Link href="/events">Más Detalles del Evento <CalendarDays className="ml-2 h-5 w-5" /></Link>
                   </Button>
                 </CardContent>
