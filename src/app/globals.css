@@ -5,16 +5,16 @@
 @layer base {
   :root {
     --background: 36 100% 94%; /* #FFF3E0 Light Cream */
-    --foreground: 0 0% 20%; /* #333333 Dark Gray */
+    --foreground: 20 12% 25%; /* #4A4440 Dark Brown-Gray */
 
     --card: 36 100% 98%; /* Near white cream */
-    --card-foreground: 0 0% 20%; /* #333333 Dark Gray */
+    --card-foreground: 20 12% 25%; /* #4A4440 Dark Brown-Gray */
 
     --popover: 36 100% 98%; /* Near white cream */
-    --popover-foreground: 0 0% 20%; /* #333333 Dark Gray */
+    --popover-foreground: 20 12% 25%; /* #4A4440 Dark Brown-Gray */
 
     --primary: 15 32% 25%; /* #4E342E Dark Coffee Brown */
-    --primary-foreground: 36 100% 94%; /* #FFF3E0 Light Cream */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF Pure White */
 
     --secondary: 19 17% 81%; /* #D7CCC8 Light brownish gray */
     --secondary-foreground: 15 32% 25%; /* #4E342E Dark Coffee Brown */
