@@ -1,4 +1,7 @@
 Como correr el programa 
-<npm install>
+
+npm install
+
 luego
-<npm run dev>
+
+npm run dev
