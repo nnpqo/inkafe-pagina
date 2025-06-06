@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import type { EventItem } from '@/lib/data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -23,7 +24,7 @@ export function EventCard({ event }: EventCardProps) {
       <CardContent className="flex-grow flex flex-col justify-between">
         <p className="text-foreground/80 mb-3 text-sm">{event.description}</p>
         <div className="mt-auto">
-          <Badge variant="secondary" className="bg-accent text-accent-foreground">{event.type}</Badge>
+          <Badge className="bg-green-600 text-primary-foreground hover:bg-green-700">{event.type}</Badge>
         </div>
       </CardContent>
     </Card>

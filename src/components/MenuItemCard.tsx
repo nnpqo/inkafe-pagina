@@ -73,8 +73,8 @@ export function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
           <p className="text-foreground/80 mb-3 text-sm">{item.description}</p>
           <div className="flex flex-wrap gap-2">
             {item.tags.includes('vegano') && (
-              <Badge variant="outline" className="border-accent text-accent bg-accent/10">
-                <Leaf className="mr-1 h-3 w-3" /> Vegano
+              <Badge variant="outline" className="border-green-500 text-green-600 bg-green-50">
+                <Leaf className="mr-1 h-3 w-3 text-green-600" /> Vegano
               </Badge>
             )}
             {item.tags.includes('sin gluten') && (
