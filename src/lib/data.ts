@@ -506,7 +506,7 @@ export const eventItems: EventItem[] = [
     time: '8:00 PM - 10:00 PM',
     description: 'Déjate llevar por una velada mágica con la fusión de ritmos andinos interpretados con charango y la improvisación del jazz. Músicos locales destacados.',
     type: 'Música en vivo',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagen1Charango.jpg',
     imageHint: 'musicos bolivianos charango quena jazz fusion escenario intimo cafeteria Cochabamba'
   },
   {
@@ -516,7 +516,7 @@ export const eventItems: EventItem[] = [
     time: '7:00 PM - 8:30 PM',
     description: 'Únete a nuestra discusión mensual sobre obras de autores cochabambinos y bolivianos. Un espacio para compartir ideas y amor por las letras de nuestra tierra.',
     type: 'Lecturas y Tertulias',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagen2Acustico.jpg',
     imageHint: 'grupo de lectura Cochabamba discutiendo libros bolivianos en cafeteria acogedora'
   },
   {
@@ -526,7 +526,7 @@ export const eventItems: EventItem[] = [
     time: '4:00 PM - 7:00 PM',
     description: 'Trae a tus amigos y disfruta de nuestra colección de juegos de mesa, con torneos amistosos de Cacho, Ajedrez y otros juegos bolivianos.',
     type: 'Juegos de mesa',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenCacho.jpg',
     imageHint: 'gente jugando cacho dados cubilete cafeteria boliviana ambiente divertido'
   },
   {
@@ -536,7 +536,7 @@ export const eventItems: EventItem[] = [
     time: '4:00 PM - 7:00 PM',
     description: 'Calienta tu tarde con nuestra promoción especial: un delicioso Api Morado o Blanco acompañado de un pastel de queso frito, ¡a precio de yapa!',
     type: 'Promoción',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenApi.jpg',
     imageHint: 'promocion api morado pastel queso cafeteria Cochabamba invierno'
   },
   {
@@ -546,7 +546,7 @@ export const eventItems: EventItem[] = [
     time: '10:00 AM - 1:00 PM',
     description: 'Aprende los secretos para preparar un café boliviano perfecto en casa. Desde la selección del grano hasta métodos de extracción. Cupos limitados, ¡inscríbete ya!',
     type: 'Taller',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenBarista.jpg',
     imageHint: 'taller barismo Cochabamba aprendiendo metodos cafe boliviano'
   },
   {
@@ -556,7 +556,7 @@ export const eventItems: EventItem[] = [
     time: '11:00 AM',
     description: 'Explora la diversidad de perfiles de sabor de los cafés de diferentes regiones de Bolivia. Dirigido por nuestro barista experto.',
     type: 'Taller',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenCafeAltura.jpg',
     imageHint: 'degustacion cafe boliviano varias tazas barista explicando'
   },
   {
@@ -566,7 +566,7 @@ export const eventItems: EventItem[] = [
     time: '8:30 PM',
     description: 'Disfruta de una noche íntima con música folclórica boliviana en formato acústico. Artistas locales invitados.',
     type: 'Música en vivo',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenMusica.jpg',
     imageHint: 'musica folclorica boliviana acustica guitarra charango cafeteria noche'
   }
 ];
