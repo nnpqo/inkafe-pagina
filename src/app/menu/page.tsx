@@ -260,7 +260,7 @@ export default function MenuPage() {
           </div>
 
           {/* Segunda fila: Checkboxes Vegano y Sin Gluten */}
-          <div className="flex items-center space-x-4 pt-2">
+          <div className="flex items-center space-x-4 pt-2 hidden">
             <div className="flex items-center space-x-2">
               <Checkbox id="vegan-filter" checked={isVegan} onCheckedChange={(checked) => setIsVegan(Boolean(checked))} />
               <Label htmlFor="vegan-filter" className="text-sm font-medium text-foreground/80 whitespace-nowrap">Vegano</Label>

@@ -176,7 +176,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 20.00',
     category: 'Postres Tentadores',
     tags: ['popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/cheesecake.jpg',
     imageHint: 'cheesecake maracuya coroico postre boliviano fresco y cremoso'
   },
   {
@@ -186,18 +186,8 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 16.00',
     category: 'Postres Tentadores',
     tags: ['popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/brownie-de-chocolate-y-nueces.jpg',
     imageHint: 'brownie chocolate amazonico boliviano nueces oscuro y denso'
-  },
-  {
-    id: 'postre-torta-chocolate-vegana',
-    name: 'Torta Húmeda de Chocolate Vegana "Pecado Sin Culpa"',
-    description: 'Deliciosa y esponjosa torta de chocolate hecha sin ingredientes de origen animal, cubierta con un rico frosting de cacao y aguacate. ¡Sorprendentemente buena!',
-    price: 'Bs. 22.00',
-    category: 'Postres Tentadores',
-    tags: ['vegano', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'torta chocolate vegana humeda frosting cacao aguacate postre saludable bolivia'
   },
   {
     id: 'postre-galletas-avena-gf',
@@ -206,18 +196,8 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 15.00', // Porción de 3
     category: 'Postres Tentadores',
     tags: ['sin gluten'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/galletas.jpg',
     imageHint: 'galletas avena chispas chocolate sin gluten caseras bolivia'
-  },
-  {
-    id: 'postre-mousse-mango-coco',
-    name: 'Mousse Cremoso de Mango y Coco (Vegano)',
-    description: 'Ligero, aireado y refrescante mousse hecho con pulpa de mango natural de los valles, leche de coco cremosa y endulzado con sirope de agave. Un postre tropical y saludable.',
-    price: 'Bs. 18.00',
-    category: 'Postres Tentadores',
-    tags: ['vegano', 'sin gluten', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'mousse mango coco vegano postre fresco tropical bolivia'
   },
   {
     id: '15',
@@ -226,7 +206,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 18.00',
     category: 'Postres Tentadores',
     tags: [],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/affogato.jpg',
     imageHint: 'affogato cafe helado vainilla espresso boliviano contraste'
   },
   {
@@ -236,20 +216,9 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 16.00',
     category: 'Postres Tentadores',
     tags: ['tradicional', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/lecheAsada.jpg',
     imageHint: 'leche asada cochabambina postre tradicional boliviano caramelo'
   },
-  {
-    id: 'postre-keke-quinua',
-    name: 'Keke de Quinua Real con Pasas de Tarija',
-    description: 'Un bizcocho nutritivo y delicioso hecho con harina de quinua real boliviana, endulzado con miel y con jugosas pasas de uva de Tarija.',
-    price: 'Bs. 14.00', // Porción
-    category: 'Postres Tentadores',
-    tags: ['sin gluten', 'nuevo'], // Asumiendo que se hace con harinas sin gluten aparte de la quinua
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'keke quinua real pasas tarija postre saludable boliviano'
-  },
-
 
   // Bebidas Refrescantes
   {
