@@ -17,7 +17,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[calc(100vh-5rem)] min-h-[500px] flex items-center justify-center text-center text-primary-foreground">
         <Image
-          src="https://placehold.co/1920x1080.png"
+          src="/imagenPrincipal2.jpeg"
           alt="Interior acogedor de Inkafe en Cochabamba con detalles andinos"
           fill
           style={{ objectFit: 'cover' }}
