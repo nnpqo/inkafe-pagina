@@ -29,7 +29,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 15.00',
     category: 'Cafetería de Origen',
     tags: ['popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/Cappuccino.jpg',
     imageHint: 'cappuccino con arte latte andino cafeteria Cochabamba'
   },
   {
@@ -203,7 +203,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 10.00',
     category: 'Aperitivos Bolivianos',
     tags: ['picante', 'popular', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/saltenia.jpeg',
     imageHint: 'salteña boliviana pollo jugosa recien horneada primer plano'
   },
   {

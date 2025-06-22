@@ -21,7 +21,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
-              <Image src="https://placehold.co/800x600.png" alt="Equipo de Inkafe preparando café en un ambiente cálido y boliviano" fill style={{ objectFit: 'cover' }} data-ai-hint="cafeteria Cochabamba ambiente calido textiles andinos" />
+              <Image src="/creatio.jpg" alt="Equipo de Inkafe preparando café en un ambiente cálido y boliviano" fill style={{ objectFit: 'cover' }} data-ai-hint="cafeteria Cochabamba ambiente calido textiles andinos" />
             </div>
           </div>
         </section>
