@@ -19,7 +19,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 10.00',
     category: 'Cafetería de Origen',
     tags: ['popular', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/expresso.jpg',
     imageHint: 'taza espresso aromatico granos yungas bolivia primer plano'
   },
   {
@@ -33,23 +33,13 @@ export const menuItems: MenuItem[] = [
     imageHint: 'cappuccino con arte latte andino cafeteria Cochabamba'
   },
   {
-    id: 'cafe-americano',
-    name: 'Americano Boliviano Robusto',
-    description: 'Doble shot de espresso de Caranavi diluido con agua caliente, ideal para quienes disfrutan un sabor intenso y prolongado.',
-    price: 'Bs. 12.00',
-    category: 'Cafetería de Origen',
-    tags: [],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'taza cafe americano negro vapor en mesa rustica bolivia'
-  },
-  {
     id: 'cafe-latte-vegano',
     name: 'Latte Vegano de Almendras y Canela',
     description: 'Espresso suave de Coroico con leche de almendras vaporizada, endulzado con sirope de agave y un toque de canela molida.',
     price: 'Bs. 18.00',
     category: 'Cafetería de Origen',
     tags: ['vegano', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/latteVegano.jpg',
     imageHint: 'latte vegano almendras canela en cafeteria moderna Cochabamba'
   },
   {
@@ -59,19 +49,10 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 18.00',
     category: 'Cafetería de Origen',
     tags: ['popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/MOCACCINO.jpg',
     imageHint: 'mocaccino con chocolate boliviano El Ceibo y crema batida'
   },
-  {
-    id: 'cafe-chocolate-vegano',
-    name: 'Chocolate Caliente Vegano con Cacao Amazónico',
-    description: 'Bebida densa y reconfortante hecha con cacao puro de la Amazonía boliviana y leche de coco orgánica. Una delicia sin lácteos.',
-    price: 'Bs. 20.00',
-    category: 'Cafetería de Origen',
-    tags: ['vegano'],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'taza chocolate caliente vegano cacao amazonico boliviano marshmallows veganos'
-  },
+
   {
     id: '11',
     name: 'Café Helado "Dulce Tentación"',
@@ -79,38 +60,8 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 18.00',
     category: 'Cafetería de Origen',
     tags: ['nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/cafeHelados.jpg',
     imageHint: 'cafe helado con leche condensada en vaso alto bolivia'
-  },
-  {
-    id: 'cafe-filtrado-v60',
-    name: 'Café Filtrado V60 (Origen del Mes)',
-    description: 'Descubre los matices de nuestros cafés especiales de microlotes bolivianos, preparados meticulosamente en V60. Pregunta por el origen del mes.',
-    price: 'Bs. 20.00',
-    category: 'Cafetería de Origen',
-    tags: ['popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'preparacion cafe V60 barista boliviano cafeteria especializada'
-  },
-  {
-    id: 'cafe-chai-latte',
-    name: 'Té Chai Latte Especiado de la India (Estilo Boliviano)',
-    description: 'Mezcla aromática de té negro, especias exóticas y leche vaporizada, con un toque dulce de miel de caña local.',
-    price: 'Bs. 17.00',
-    category: 'Cafetería de Origen',
-    tags: [],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'taza te chai latte especias aromaticas con canela y anis estrella'
-  },
-  {
-    id: 'cafe-matcha-latte',
-    name: 'Matcha Latte Ceremonial Japonés',
-    description: 'Té verde matcha de grado ceremonial batido con leche (opción vegana disponible). Lleno de antioxidantes y energía suave.',
-    price: 'Bs. 22.00',
-    category: 'Cafetería de Origen',
-    tags: ['nuevo', 'vegano'], // Vegano si se pide con leche vegetal
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'matcha latte verde vibrante con arte latte sencillo'
   },
   {
     id: 'cafe-frappuccino-caramelo',
@@ -119,19 +70,19 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 25.00',
     category: 'Cafetería de Origen',
     tags: ['popular', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/frappe.png',
     imageHint: 'frappuccino cafe caramelo salado con crema batida en vaso alto'
   },
 
   // Desayunos Energéticos
   {
     id: '3',
-    name: 'Tostadas "De la Abuela" con Palta y Queso Chaqueño',
+    name: 'Tostadas con Palta y Queso Chaqueño',
     description: 'Pan de campo artesanal tostado, cubierto con palta fresca de Mizque, lascas de queso chaqueño y un chorrito de aceite de oliva extra virgen.',
     price: 'Bs. 22.00',
     category: 'Desayunos Energéticos',
     tags: ['tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/tostada-de-aguacate-y-queso.jpg',
     imageHint: 'tostadas palta queso chaqueño desayuno boliviano rustico'
   },
   {
@@ -141,7 +92,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 25.00',
     category: 'Desayunos Energéticos',
     tags: ['vegano', 'sin gluten', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/desayunoBowl.jpg',
     imageHint: 'bowl avena chia frutas frescas granola nueces desayuno saludable bolivia'
   },
   {
@@ -151,18 +102,8 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 28.00',
     category: 'Desayunos Energéticos',
     tags: ['vegano', 'sin gluten', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/desayunoAvena.jpg',
     imageHint: 'bowl yogurt coco vegano granola quinua frutos rojos desayuno Cochabamba'
-  },
-  {
-    id: 'desayuno-revuelto-tofu',
-    name: 'Revuelto de Tofu "Ranchero Vegano"',
-    description: 'Tofu orgánico desmenuzado y salteado con tomate fresco, cebolla, pimentón ahumado, un toque de cúrcuma y llajua casera. Servido con tortillas de maíz o pan integral tostado.',
-    price: 'Bs. 30.00',
-    category: 'Desayunos Energéticos',
-    tags: ['vegano', 'sin gluten', 'picante'], // Sin gluten si se elige tortillas de maíz
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'revuelto tofu vegano ranchero con tortillas maiz y llajua boliviana'
   },
   {
     id: 'desayuno-continental-inkafe',
@@ -171,7 +112,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 30.00',
     category: 'Desayunos Energéticos',
     tags: [],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/desayunoContinental.jpg',
     imageHint: 'desayuno continental completo cafe jugo frutas pan tostado bolivia'
   },
 
@@ -179,11 +120,11 @@ export const menuItems: MenuItem[] = [
   {
     id: '8',
     name: 'Cuñapés Horneados (Porción de 4)',
-    description: 'Deliciosos pancitos de queso y almidón de yuca, horneados hasta quedar doraditos. Un clásico de la tradición oriental boliviana.',
+    description: 'Deliciosos pancitos de queso y almidón de yuca',
     price: 'Bs. 12.00',
     category: 'Aperitivos Bolivianos',
     tags: ['sin gluten', 'popular', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/cuniapes.jpg',
     imageHint: 'cuñapes horneados dorados queso boliviano primer plano'
   },
   {
@@ -193,13 +134,13 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 20.00',
     category: 'Aperitivos Bolivianos',
     tags: ['popular', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/ApiPastel.jpg',
     imageHint: 'api morado humeante con pastel queso frito tradicion boliviana'
   },
   {
     id: '10',
     name: 'Salteña Boliviana de Pollo Picantita (Unidad)',
-    description: 'Empanada jugosa horneada, rellena de un guiso especiado de pollo, papas, arvejas y un toque de ají amarillo. ¡Cuidado, es adictiva!',
+    description: 'Empanada jugosa horneada, rellena de un guiso especiado de pollo, papas, arvejas y un toque de ají.',
     price: 'Bs. 10.00',
     category: 'Aperitivos Bolivianos',
     tags: ['picante', 'popular', 'tradicional'],
@@ -207,23 +148,13 @@ export const menuItems: MenuItem[] = [
     imageHint: 'salteña boliviana pollo jugosa recien horneada primer plano'
   },
   {
-    id: 'trad-saltena-vegana',
-    name: 'Salteña Vegana de Soya y Verduras (Unidad)',
-    description: 'Nuestra innovadora versión vegana de la salteña, rellena de un sabroso guiso de soya texturizada con verduras frescas y especias andinas.',
-    price: 'Bs. 12.00',
-    category: 'Aperitivos Bolivianos',
-    tags: ['vegano', 'nuevo', 'picante'],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'salteña vegana soya verduras dorada bolivia innovacion'
-  },
-  {
     id: '13',
     name: 'Huminta a la Olla Dulce de Choclo Tierno',
-    description: 'Tamal dulce hecho con choclo tierno molido, queso fresco y un toque de anís, envuelto en su propia chala y cocido lentamente a la olla. Sabor a hogar.',
+    description: 'Huminta dulce hecho con choclo tierno molido, queso fresco y un toque de anís, envuelto en su propia chala y cocido lentamente a la olla.',
     price: 'Bs. 15.00',
     category: 'Aperitivos Bolivianos',
     tags: ['sin gluten', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/humintas-a-la-olla.jpg',
     imageHint: 'huminta boliviana dulce choclo tierno vapor saliendo'
   },
   {
@@ -233,7 +164,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 18.00',
     category: 'Aperitivos Bolivianos',
     tags: ['popular', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/empanadas.jpg',
     imageHint: 'empanadas fritas queso cebolla doradas bolivia'
   },
 
@@ -328,7 +259,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 18.00',
     category: 'Bebidas Refrescantes',
     tags: ['vegano', 'sin gluten', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/JugoTumbo.jpg',
     imageHint: 'jugo tumbo fresco boliviano vaso con hielo y rodaja fruta'
   },
   {
@@ -338,47 +269,37 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 20.00',
     category: 'Bebidas Refrescantes',
     tags: ['vegano', 'sin gluten', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/jugoVerdeDetox.jpg',
     imageHint: 'jugo detox verde energizante ingredientes frescos bolivia'
   },
   {
     id: 'bebida-limonada-hierbabuena',
     name: 'Limonada Fresca con Hierbabuena de Huerto Local',
-    description: 'Clásica limonada hecha con limones frescos y un generoso manojo de hierbabuena de nuestro huerto (o de productores locales).',
+    description: 'Clásica limonada hecha con limones frescos y hierbabuena de nuestro huerto (o de productores locales).',
     price: 'Bs. 15.00',
     category: 'Bebidas Refrescantes',
     tags: ['vegano', 'sin gluten'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/limonada.jpeg',
     imageHint: 'limonada hierbabuena fresca vaso con hielo y hojas de menta bolivia'
   },
   {
     id: '12',
     name: 'Infusión de Hojas de Coca "Energía de los Andes"',
-    description: 'Infusión tradicional de hojas de coca seleccionadas, ideal para la digestión, la energía y para aclimatarse a la altura de Cochabamba.',
+    description: 'Infusión tradicional de hojas de coca seleccionadas, ideal para la digestión.',
     price: 'Bs. 8.00',
     category: 'Bebidas Refrescantes',
     tags: ['sin gluten', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/TeHojasCoca.jpg',
     imageHint: 'infusion hojas coca en taza tradicional boliviana'
-  },
-  {
-    id: 'bebida-smoothie-tropical',
-    name: 'Smoothie Tropical Vegano "Paraíso Amazónico"',
-    description: 'Batido cremoso y nutritivo con mango Kent, piña dulce, plátano maduro y leche de almendras orgánica. Sin azúcar añadida.',
-    price: 'Bs. 22.00',
-    category: 'Bebidas Refrescantes',
-    tags: ['vegano', 'sin gluten', 'nuevo', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'smoothie tropical vegano mango piña platano colores vibrantes bolivia'
   },
   {
     id: 'bebida-mocochinchi',
     name: 'Mocochinchi Refrescante Tradicional',
-    description: 'Bebida típica boliviana a base de duraznos deshidratados (mocochinchi), cocidos con canela y clavo. Servido frío, es pura nostalgia.',
+    description: 'Bebida típica boliviana a base de duraznos deshidratados (mocochinchi), cocidos con canela y clavo.',
     price: 'Bs. 14.00',
     category: 'Bebidas Refrescantes',
     tags: ['vegano', 'sin gluten', 'tradicional', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/mocochinchi.jpg',
     imageHint: 'vaso mocochinchi boliviano con durazno deshidratado y hielo'
   },
 
@@ -390,7 +311,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 30.00',
     category: 'Aperitivos Bolivianos', // Re-categorizado a Aperitivos
     tags: ['nuevo', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/sandiwch.jpg',
     imageHint: 'club sandwich gourmet boliviano con papas fritas rusticas'
   },
   {
@@ -400,7 +321,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 28.00',
     category: 'Aperitivos Bolivianos', // Re-categorizado
     tags: ['vegano', 'popular', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/panini.jpg',
     imageHint: 'sandwich vegano hongos pesto huacataya pan ciabatta bolivia'
   },
   {
@@ -410,7 +331,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 25.00',
     category: 'Aperitivos Bolivianos', // Re-categorizado
     tags: [],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/paniniQuinoa.jpg',
     imageHint: 'panini caprese boliviano tomate queso albahaca ingredientes frescos'
   },
   {
@@ -420,7 +341,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 26.00',
     category: 'Aperitivos Bolivianos', // Re-categorizado
     tags: ['vegano', 'sin gluten', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/paniniQuinoa.jpg',
     imageHint: 'sandwich palta tomate pan quinua sin gluten vegano bolivia'
   },
 
