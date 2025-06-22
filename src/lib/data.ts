@@ -331,7 +331,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 25.00',
     category: 'Aperitivos Bolivianos', // Re-categorizado
     tags: [],
-    imageUrl: '/paniniQuinoa.jpg',
+    imageUrl: '/imagenPanini.jpg',
     imageHint: 'panini caprese boliviano tomate queso albahaca ingredientes frescos'
   },
   {
@@ -353,7 +353,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 2.00',
     category: 'Panadería Artesanal',
     tags: ['popular', 'tradicional'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenMarraqueta.jpg',
     imageHint: 'marraqueta boliviana pan tradicional cochabamba crocante'
   },
   {
@@ -363,7 +363,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 15.00', // Hogaza pequeña
     category: 'Panadería Artesanal',
     tags: ['vegano', 'nuevo'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenPanIntegral.jpg',
     imageHint: 'pan integral artesanal semillas andinas masa madre bolivia'
   },
   {
@@ -373,7 +373,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 8.00',
     category: 'Panadería Artesanal',
     tags: [],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenCroissant.jpg',
     imageHint: 'croissant mantequilla hojaldre artesanal panaderia bolivia'
   },
   {
@@ -383,7 +383,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 12.00', // Porción
     category: 'Panadería Artesanal',
     tags: ['vegano', 'nuevo', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenQuequeZana.jpg',
     imageHint: 'queque zanahoria vegano cobertura limon nueces panaderia bolivia'
   },
   {
@@ -393,7 +393,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 10.00',
     category: 'Panadería Artesanal',
     tags: ['popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenCanela.jpg',
     imageHint: 'rollo canela glaseado queso crema panaderia artesanal bolivia'
   },
   {
@@ -403,7 +403,7 @@ export const menuItems: MenuItem[] = [
     price: 'Bs. 9.00',
     category: 'Panadería Artesanal',
     tags: ['tradicional', 'popular'],
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: '/imagenAlfajor.jpg',
     imageHint: 'alfajor maicena gigante dulce de leche coco boliviano artesanal'
   }
 ];
